@@ -3,6 +3,9 @@ extends Node
 export var websocket_url = "ws://localhost:8888/ws"
 
 var _client = WebSocketClient.new()
+var dataSendTimer = Timer.new()
+
+var pos = Vector3.ZERO
 
 func _ready():
 	# Connect base signals to get notified of connection open, close, and errors.
@@ -13,6 +16,11 @@ func _ready():
 	# a full packet is received.
 	# Alternatively, you could check get_peer(1).get_available_packets() in a loop.
 	_client.connect("data_received", self, "_on_data")
+	dataSendTimer.wait_time = 0.01666
+	print(dataSendTimer.wait_time)
+	dataSendTimer.autostart = true
+	dataSendTimer.connect("timeout",self, "send_data")
+	add_child(dataSendTimer)
 
 	# Initiate connection to the given URL.
 	var err = _client.connect_to_url(websocket_url)
@@ -33,13 +41,23 @@ func _connected(proto = ""):
 	print("Connected with protocol: ", proto)
 	# You MUST always use get_peer(1).put_packet to send data to server,
 	# and not put_packet directly when not using the MultiplayerAPI.
-	_client.get_peer(1).put_packet("Test packet".to_utf8())
+	_client.get_peer(1).put_packet(JSON.print({"Hello": "World"}).to_utf8())
 
 func _on_data():
 	# Print the received packet, you MUST always use get_peer(1).get_packet
 	# to receive data from server, and not get_packet directly when not
 	# using the MultiplayerAPI.
 	print("Got data from server: ", _client.get_peer(1).get_packet().get_string_from_utf8())
+
+func send_data():
+	var data = {"pos": 
+		{
+			"x": pos.x,
+			"y":pos.y,
+			"z":pos.z
+		}
+	}
+	_client.get_peer(1).put_packet(JSON.print(data).to_utf8())
 
 func _process(delta):
 	# Call this in _process or _physics_process. Data transfer, and signals
