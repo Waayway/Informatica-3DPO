@@ -11,7 +11,7 @@ func _ready():
 func _process(delta):
 	if self.global_transform.origin != nextPoint:
 		var gap = Vector3(nextPoint - global_transform.origin)
-		move_and_slide(gap.normalized()*speedToPoint*delta)
+		move_and_slide(gap.normalized()*speedToPoint)
 
 func setNewPoint(newPoint: Vector3):
 	nextPoint = newPoint
