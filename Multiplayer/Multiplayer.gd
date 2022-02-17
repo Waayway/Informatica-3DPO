@@ -1,6 +1,6 @@
 extends Node
 
-signal lobby_new_player(players)
+signal lobby_new_player(players, data)
 
 #default websocket_url
 export var websocket_url = "ws://localhost:8888/ws"
@@ -83,11 +83,12 @@ func _on_data():
 		get_lobby_data(JSON.parse(data.substr(1)).result)
 
 func get_lobby_data(data: Dictionary):
-	var list = data.keys
-	emit_signal("lobby_new_player", list)
+	var list = data.keys()
+	emit_signal("lobby_new_player", list, data)
 
 func send_lobby_message():
-	_client.get_peer(1).put_packet('0{"'+id+'": '+str(isReady)+'}')
+	print(isReady)
+	_client.get_peer(1).put_packet(('0{"'+id+'": '+str(isReady).to_lower()+'}').to_utf8())
 
 func send_first_message():
 	var data = {

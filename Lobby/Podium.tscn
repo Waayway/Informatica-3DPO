@@ -1,9 +1,11 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Lobby/Podium.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://Lobby/PodiumPlayer.gd" type="Script" id=2]
 
 [sub_resource type="CapsuleMesh" id=1]
+
+[sub_resource type="SpatialMaterial" id=2]
 
 [node name="Podium" type="MeshInstance"]
 transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0 )
@@ -17,4 +19,4 @@ script = ExtResource( 2 )
 [node name="Player" type="MeshInstance" parent="Player"]
 mesh = SubResource( 1 )
 skeleton = NodePath("")
-material/0 = null
+material/0 = SubResource( 2 )

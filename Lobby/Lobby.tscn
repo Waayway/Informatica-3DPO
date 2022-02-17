@@ -1,10 +1,34 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Lobby/Lobby.gd" type="Script" id=1]
+[ext_resource path="res://MainMenu/MainMenu.tres" type="Theme" id=2]
 
 [node name="Spatial" type="Spatial"]
 script = ExtResource( 1 )
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -4, 0, 0 )
+transform = Transform( -0.57196, 0, -0.820282, 0, 1, 0, 0.820282, 0, -0.57196, -4, 1.83706, -0.804956 )
 current = true
+
+[node name="Control" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -50.0
+margin_top = -20.0
+toggle_mode = true
+text = "Ready"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="toggled" from="Button" to="." method="_on_Button_toggled"]

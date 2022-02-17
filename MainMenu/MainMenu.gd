@@ -21,4 +21,4 @@ func _on_Button_pressed():
 	if (IPRegex.search(IPtext) or HostnameRegex.search(IPtext) or IPtext.empty()) and not UsernameInput.text.empty():
 		get_node("/root/Multiplayer").username = UsernameInput.text
 		get_node("/root/Multiplayer").start_connection(IPtext)
-	get_tree().change_scene("res://Lobby/Lobby.tscn")
+		get_tree().change_scene("res://Lobby/Lobby.tscn")

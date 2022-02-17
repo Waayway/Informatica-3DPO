@@ -13,5 +13,10 @@ func _process(delta):
 	var height = sin(counter)*differentHeight
 	var newPosition = basePosition
 	newPosition.y += height
-	print(height)
 	global_transform.origin = newPosition
+
+func change_color_to_ready(ready: bool):
+	var color = Color.white
+	if ready:
+		color = Color.green
+	$Player.get_surface_material(0).albedo_color = color
