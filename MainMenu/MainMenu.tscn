@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://TestScene/TestScene.tscn" type="PackedScene" id=1]
 [ext_resource path="res://MainMenu/MainMenu.gd" type="Script" id=2]
+[ext_resource path="res://MainMenu/MainMenu.tres" type="Theme" id=3]
 
 [sub_resource type="Animation" id=1]
 length = 0.001
@@ -39,14 +40,47 @@ tracks/0/keys = {
 script = ExtResource( 2 )
 
 [node name="Control" type="Control" parent="."]
-margin_right = 1015.0
-margin_bottom = 594.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
+theme = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Container" type="Container" parent="Control"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -200.0
+margin_top = -200.0
+margin_right = 200.0
+margin_bottom = 200.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Username" type="LineEdit" parent="Control/VBoxContainer"]
+margin_top = 154.0
+margin_right = 400.0
+margin_bottom = 183.0
+align = 1
+placeholder_text = "Username"
+
+[node name="Ip" type="LineEdit" parent="Control/VBoxContainer"]
+margin_top = 187.0
+margin_right = 400.0
+margin_bottom = 216.0
+align = 1
+placeholder_text = "IP or Hostname"
+
+[node name="Button" type="Button" parent="Control/VBoxContainer"]
+margin_top = 220.0
+margin_right = 400.0
+margin_bottom = 245.0
+text = "Play!"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -60,3 +94,5 @@ anims/RotationBackground = SubResource( 2 )
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 0.675042, 0.24371, -0.696364, -0.0073203, 0.946032, 0.323991, 0.737743, -0.21361, 0.640396, -8.93687, 6.24835, 9.18181 )
 current = true
+
+[connection signal="pressed" from="Control/VBoxContainer/Button" to="." method="_on_Button_pressed"]

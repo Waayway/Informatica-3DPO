@@ -1,24 +1,37 @@
 extends Node
 
+signal lobby_new_player(players)
+
+#default websocket_url
 export var websocket_url = "ws://localhost:8888/ws"
 
+#WebsocketClients and if it is connected so you can check before sending any data
 var _client = WebSocketClient.new()
 var isClientConnected: bool = false
+#Timer for sending data 30 times a second see _ready() for connecting and setting data
 var dataSendTimer: Timer = Timer.new()
 
+#player data, will get inserted via the Player.gd
 var pos = Vector3.ZERO
 var rot = Vector3.ZERO
 var vel = Vector3.ZERO
+
+#Basic data only username will be changed via a different script
 var username: String = ""
 var id: String = ""
+
+#LobbyData is the player ready or not.
 var isReady: bool = false
 
+#Data for moving players around.
 var players: Array
 var spawned_players: Array
 var instance_players: Dictionary
 
+# To be able to get the id from the firstMessage
 var firstMessage: bool = true
 
+# Thing for spawning multiplayer players.
 var MultiplayerPlayer = preload("res://Multiplayer/MultiplayerPlayer.tscn")
 
 func _ready():
@@ -31,9 +44,11 @@ func _ready():
 	# a full packet is received.
 	# Alternatively, you could check get_peer(1).get_available_packets() in a loop.
 	_client.connect("data_received", self, "_on_data")
-	dataSendTimer.wait_time = 1.0/3.0
+	
+	# Set a timer for sending date 30 times a second
+	dataSendTimer.wait_time = 1.0/30.0
 	dataSendTimer.autostart = true
-	dataSendTimer.connect("timeout",self, "send_data")	
+	dataSendTimer.connect("timeout",self, "send_data")
 
 func start_connection(url: String = ""):
 	# Initiate connection to the given URL.
@@ -52,24 +67,24 @@ func _closed(was_clean = false):
 	# was_clean will tell you if the disconnection was correctly notified
 	# by the remote peer before closing the socket.
 	print("Closed, clean: ", was_clean)
+	isClientConnected = false
 	set_process(false)
 
 func _connected(_proto = ""):
 	pass
 
 func _on_data():
-	# Print the received packet, you MUST always use get_peer(1).get_packet
-	# to receive data from server, and not get_packet directly when not
-	# using the MultiplayerAPI.
 	var data = _client.get_peer(1).get_packet().get_string_from_utf8()
 	if firstMessage:
 		id = data
+		print(id)
 		firstMessage = false
 	if data.begins_with("0"):
 		get_lobby_data(JSON.parse(data.substr(1)).result)
 
 func get_lobby_data(data: Dictionary):
-	pass
+	var list = data.keys
+	emit_signal("lobby_new_player", list)
 
 func send_lobby_message():
 	_client.get_peer(1).put_packet('0{"'+id+'": '+str(isReady)+'}')
