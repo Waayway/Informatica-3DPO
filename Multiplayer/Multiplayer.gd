@@ -77,9 +77,10 @@ func _on_data():
 	var data = _client.get_peer(1).get_packet().get_string_from_utf8()
 	if firstMessage:
 		id = data
-		print(id)
 		firstMessage = false
+		send_first_message()
 	if data.begins_with("0"):
+		print(data.substr(1))
 		get_lobby_data(JSON.parse(data.substr(1)).result)
 
 func get_lobby_data(data: Dictionary):
@@ -87,7 +88,6 @@ func get_lobby_data(data: Dictionary):
 	emit_signal("lobby_new_player", list, data)
 
 func send_lobby_message():
-	print(isReady)
 	_client.get_peer(1).put_packet(('0{"'+id+'": '+str(isReady).to_lower()+'}').to_utf8())
 
 func send_first_message():
