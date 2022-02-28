@@ -2,18 +2,22 @@ extends KinematicBody
 
 export var id: String = ""
 
-var nextPoint: Vector3 = Vector3.ZERO
-var speedToPoint: float = 0.0
+var pos = Vector3.ZERO
+var rot = Vector3.ZERO
+var vel = Vector3.ZERO
 
 func _ready():
 	pass
 
 func _process(delta):
-	if self.global_transform.origin != nextPoint:
-		var gap = Vector3(nextPoint - global_transform.origin)
-		move_and_slide(gap.normalized()*speedToPoint)
+	move_and_slide(vel)
 
-func setNewPoint(newPoint: Vector3):
-	nextPoint = newPoint
-	speedToPoint = global_transform.origin.distance_to(nextPoint) * (1/0.0166)
-	print(nextPoint, speedToPoint)
+func apply_data(data: Dictionary):
+	var local_pos = data["pos"]
+	var local_rot = data["rot"]
+	var local_vel = data["vel"]
+	pos = Vector3(local_pos["x"],local_pos["y"],local_pos["z"])
+	self.global_transform.origin = pos
+	rot = Vector3(local_rot["x"],local_rot["y"],local_rot["z"])
+	self.rotation_degrees = rot
+	vel = Vector3(local_vel["x"],local_vel["y"],local_vel["z"])

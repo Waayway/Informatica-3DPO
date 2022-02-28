@@ -1,6 +1,7 @@
 extends Node
 
 signal lobby_new_player(players, data)
+signal change_to_game
 
 #default websocket_url
 export var websocket_url = "ws://localhost:8888/ws"
@@ -27,6 +28,8 @@ var isReady: bool = false
 var players: Array
 var spawned_players: Array
 var instance_players: Dictionary
+
+var players_done_loading: int
 
 # To be able to get the id from the firstMessage
 var firstMessage: bool = true
@@ -79,16 +82,48 @@ func _on_data():
 		id = data
 		firstMessage = false
 		send_first_message()
-	if data.begins_with("0"):
-		print(data.substr(1))
+	elif data.begins_with("0"):
 		get_lobby_data(JSON.parse(data.substr(1)).result)
+	elif data.begins_with("2"):
+		var message = JSON.parse(data.substr(1)).result
+		players_done_loading = message["playersdoneloading"]
+		players = message["players"]
+		emit_signal("change_to_game")
+	elif data.begins_with("3"):
+		var message = JSON.parse(data.substr(1)).result
+		players_done_loading = message["playersdoneloading"]
+	elif data.begins_with("4"):
+		var message = JSON.parse(data.substr(1)).result
+		process_vel_data(message)
+
+func process_vel_data(data: Dictionary):
+	var keys = data.keys()
+	var notYetSpawnedPlayers: Array = []
+	for i in keys:
+		if not i in spawned_players:
+			notYetSpawnedPlayers.append(i)
+	for i in notYetSpawnedPlayers:
+		var instance = MultiplayerPlayer.instance()
+		instance.id = i
+		self.add_child(instance)
+		instance_players[i] = instance
+		spawned_players.append(i)
+	
+	for i in keys:
+		instance_players[i].apply_data(data[i])
 
 func get_lobby_data(data: Dictionary):
-	var list = data.keys()
+	var list = data["players"].keys()
 	emit_signal("lobby_new_player", list, data)
 
 func send_lobby_message():
 	_client.get_peer(1).put_packet(('0{"'+id+'": '+str(isReady).to_lower()+'}').to_utf8())
+
+func send_lobbyloaded_message():
+	_client.get_peer(1).put_packet(("2true").to_utf8())
+
+func send_timer_timeout():
+	_client.get_peer(1).put_packet("1timer".to_utf8())
 
 func send_first_message():
 	var data = {
@@ -100,8 +135,8 @@ func send_velocityData():
 	var data = {
 		"pos": {
 			"x": pos.x,
-			"y":pos.y,
-			"z":pos.z
+			"y": pos.y,
+			"z": pos.z
 		},
 		"rot": {
 			"x": rot.x,
@@ -114,7 +149,15 @@ func send_velocityData():
 			"z": vel.z
 		}
 	}
-	_client.get_peer(1).put_packet(("1"+JSON.print(data)).to_utf8())
+	_client.get_peer(1).put_packet(("4"+JSON.print(data)).to_utf8())
+
+func create_data_timer():
+	var timer: Timer = Timer.new()
+	timer.wait_time = 1.0/30
+	timer.autostart = true
+	timer.one_shot = false
+	timer.connect("timeout", self, "send_velocityData")
+	self.add_child(timer)
 
 func _process(_delta):
 	# Call this in _process or _physics_process. Data transfer, and signals

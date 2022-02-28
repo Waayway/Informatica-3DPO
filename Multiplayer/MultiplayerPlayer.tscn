@@ -6,10 +6,7 @@
 
 [sub_resource type="CapsuleMesh" id=2]
 
-[sub_resource type="CylinderMesh" id=3]
-top_radius = 0.01
-bottom_radius = 0.01
-height = 2.61
+[sub_resource type="CubeMesh" id=3]
 
 [node name="MultiplayerPlayer" type="KinematicBody"]
 script = ExtResource( 1 )
@@ -17,13 +14,12 @@ script = ExtResource( 1 )
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
 shape = SubResource( 1 )
-disabled = true
 
 [node name="MeshInstance" type="MeshInstance" parent="CollisionShape"]
 mesh = SubResource( 2 )
 material/0 = null
 
-[node name="MeshInstance" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, -0.00254814, 0.999997, 0, -0.999997, -0.00254814, 0, 0.995716, -0.708362 )
+[node name="MeshInstance" type="MeshInstance" parent="CollisionShape/MeshInstance"]
+transform = Transform( 0.5, 0, 0, 0, 0.3, 0, 0, 0, 0.1, 0, -0.720654, -0.841723 )
 mesh = SubResource( 3 )
 material/0 = null

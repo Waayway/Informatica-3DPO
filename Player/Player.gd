@@ -6,6 +6,8 @@ onready var ground_ray = $GroundRay
 
 var gravity = -30
 var max_speed = 8
+var max_sprint_speed = 16
+var cur_max_speed = max_speed
 var jump_speed = 10
 var mouse_sensitivity = 0.002  # radians/pixel
 
@@ -25,6 +27,10 @@ func get_input():
 	if Input.is_action_pressed("strafe_right"):
 		input_dir += camera.global_transform.basis.x
 	input_dir = input_dir.normalized()
+	if Input.is_action_pressed("sprint"):
+		cur_max_speed = max_sprint_speed
+	else:
+		cur_max_speed = max_speed
 	return input_dir
 	
 func _unhandled_input(event):
@@ -37,7 +43,7 @@ func _unhandled_input(event):
 
 func _physics_process(delta):
 	velocity.y += gravity * delta
-	var desired_velocity = get_input() * max_speed
+	var desired_velocity = get_input() * cur_max_speed
 	if Input.is_action_just_pressed("jump") and ground_ray.is_colliding():
 		velocity.y = jump_speed
 	

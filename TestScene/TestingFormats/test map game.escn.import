@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/test map game.dae-0fccad0f563f4d1fe3f4da1f1842e83a.scn"
+path="res://.import/test map game.escn-abb75e3152d046482babc9ae483b7437.scn"
 
 [deps]
 
-source_file="res://TestScene/test map game.dae"
-dest_files=[ "res://.import/test map game.dae-0fccad0f563f4d1fe3f4da1f1842e83a.scn" ]
+source_file="res://TestScene/TestingFormats/test map game.escn"
+dest_files=[ "res://.import/test map game.escn-abb75e3152d046482babc9ae483b7437.scn" ]
 
 [params]
 
