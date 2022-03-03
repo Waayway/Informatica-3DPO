@@ -13,20 +13,38 @@ var mouse_sensitivity = 0.002  # radians/pixel
 
 var velocity = Vector3.ZERO
 
+var animationBlendValue: int = -1
+const ANIMATION_IDLE = -1
+const ANIMATION_WALK = 0
+const ANIMATION_RUN = 1
+
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func get_input():
 	var input_dir = Vector3.ZERO
+	var smooving: bool = false
 	if Input.is_action_pressed("move_forward"):
 		input_dir += -camera.global_transform.basis.z
+		smooving = true
 	if Input.is_action_pressed("move_backward"):
 		input_dir += camera.global_transform.basis.z
+		smooving = true
 	if Input.is_action_pressed("strafe_left"):
 		input_dir += -camera.global_transform.basis.x
 	if Input.is_action_pressed("strafe_right"):
 		input_dir += camera.global_transform.basis.x
 	input_dir = input_dir.normalized()
+	
+	if smooving:
+		animationBlendValue = ANIMATION_WALK
+		if Input.is_action_pressed("sprint"):
+			animationBlendValue = ANIMATION_RUN
+	else:
+		animationBlendValue = ANIMATION_IDLE
+	
+	get_node("/root/Multiplayer").anim = animationBlendValue
+	
 	if Input.is_action_pressed("sprint"):
 		cur_max_speed = max_sprint_speed
 	else:

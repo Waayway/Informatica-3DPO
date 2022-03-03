@@ -2,6 +2,8 @@ extends KinematicBody
 
 export var id: String = ""
 
+onready var anim_tree = $xbot/RootNode/AnimationTree
+
 var pos = Vector3.ZERO
 var rot = Vector3.ZERO
 var vel = Vector3.ZERO
@@ -21,3 +23,4 @@ func apply_data(data: Dictionary):
 	rot = Vector3(local_rot["x"],local_rot["y"],local_rot["z"])
 	self.rotation_degrees = rot
 	vel = Vector3(local_vel["x"],local_vel["y"],local_vel["z"])
+	anim_tree.set("parameters/Blend3/blend_amount", data["anim"])

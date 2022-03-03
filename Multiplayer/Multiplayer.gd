@@ -16,6 +16,7 @@ var dataSendTimer: Timer = Timer.new()
 var pos = Vector3.ZERO
 var rot = Vector3.ZERO
 var vel = Vector3.ZERO
+var anim: int = -1
 
 #Basic data only username will be changed via a different script
 var username: String = ""
@@ -147,7 +148,8 @@ func send_velocityData():
 			"x": vel.x,
 			"y": vel.y,
 			"z": vel.z
-		}
+		},
+		"anim": anim,
 	}
 	_client.get_peer(1).put_packet(("4"+JSON.print(data)).to_utf8())
 
