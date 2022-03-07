@@ -1,10 +1,14 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Multiplayer/MultiplayerPlayer.gd" type="Script" id=1]
 [ext_resource path="res://Multiplayer/Models/xbot.tscn" type="PackedScene" id=2]
+[ext_resource path="res://MainMenu/MainMenu.tres" type="Theme" id=3]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.946709
+
+[sub_resource type="ViewportTexture" id=2]
+viewport_path = NodePath("Spatial/Viewport")
 
 [node name="MultiplayerPlayer" type="KinematicBody"]
 script = ExtResource( 1 )
@@ -15,3 +19,28 @@ shape = SubResource( 1 )
 
 [node name="xbot" parent="." instance=ExtResource( 2 )]
 transform = Transform( -1.5, 0, -1.31134e-07, 0, 1.5, 0, 1.31134e-07, 0, -1.5, 0, -1.47241, 0 )
+
+[node name="Spatial" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.56578, 0 )
+
+[node name="Viewport" type="Viewport" parent="Spatial"]
+size = Vector2( 300, 50 )
+transparent_bg = true
+
+[node name="Label" type="Label" parent="Spatial/Viewport"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 3 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Hello, World"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite3D" type="Sprite3D" parent="Spatial"]
+transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0 )
+flip_v = true
+billboard = 2
+texture = SubResource( 2 )

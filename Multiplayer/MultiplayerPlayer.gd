@@ -1,6 +1,7 @@
 extends KinematicBody
 
 export var id: String = ""
+export var username: String = ""
 
 onready var anim_tree = $xbot/RootNode/AnimationTree
 
@@ -9,7 +10,7 @@ var rot = Vector3.ZERO
 var vel = Vector3.ZERO
 
 func _ready():
-	pass
+	get_node("Spatial/Viewport/Label").text = username
 
 func _process(delta):
 	move_and_slide(vel)

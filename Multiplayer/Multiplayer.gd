@@ -27,6 +27,7 @@ var isReady: bool = false
 
 #Data for moving players around.
 var players: Array
+var playerNames: Dictionary
 var spawned_players: Array
 var instance_players: Dictionary
 
@@ -89,6 +90,7 @@ func _on_data():
 		var message = JSON.parse(data.substr(1)).result
 		players_done_loading = message["playersdoneloading"]
 		players = message["players"]
+		playerNames = message["playerNames"]
 		emit_signal("change_to_game")
 	elif data.begins_with("3"):
 		var message = JSON.parse(data.substr(1)).result
@@ -106,6 +108,7 @@ func process_vel_data(data: Dictionary):
 	for i in notYetSpawnedPlayers:
 		var instance = MultiplayerPlayer.instance()
 		instance.id = i
+		instance.username = playerNames[i]
 		self.add_child(instance)
 		instance_players[i] = instance
 		spawned_players.append(i)

@@ -25,3 +25,5 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.21997, 4.24578 )
 [node name="LoadingScreen" parent="." instance=ExtResource( 4 )]
 
 [node name="Map" parent="." instance=ExtResource( 1 )]
+
+[node name="Timer" type="Timer" parent="."]
