@@ -9,20 +9,19 @@ var ready: bool = false
 var counter = 0
 func _ready():
 	basePosition = global_transform.origin
+	$xbot/RootNode/AnimationPlayer.play("IdleAnimation")
 
 func _process(delta):
-	counter += speed*delta
-	var height = sin(counter)*differentHeight
-	var newPosition = basePosition
-	newPosition.y += height
-	global_transform.origin = newPosition
+	pass
 
 func change_color_to_ready(isReady: bool):
 	ready = isReady
-	var color = Color.white
+	var color = Color.black
 	if ready:
 		color = Color.green
-	$Player.get_surface_material(0).albedo_color = color
+		$xbot/RootNode/AnimationPlayer.play("RaiseHand")
+		$xbot/RootNode/AnimationPlayer.animation_set_next("RaiseHand","IdleAnimation")
+	get_parent().get_node("Spatial/Viewport/Label").set("custom_colors/font_color", color)
 	
 func change_name_above_head(name: String):
 	get_parent().get_node("Spatial/Viewport/Label").text = name

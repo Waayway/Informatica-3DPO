@@ -22,6 +22,8 @@ material/0 = null
 [node name="Camera" type="Camera" parent="RotationHelper"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.984247, 0 )
 current = true
+near = 0.02
+far = 8192.0
 
 [node name="GroundRay" type="RayCast" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.47765, 0 )

@@ -2,6 +2,7 @@ extends Node
 
 signal lobby_new_player(players, data)
 signal change_to_game
+signal back_to_lobby
 
 #default websocket_url
 export var websocket_url = "ws://localhost:8888/ws"
@@ -33,6 +34,11 @@ var spawned_players: Array
 var instance_players: Dictionary
 
 var players_done_loading: int
+
+#Timer Data for ingame timer so you can load timer after the fact
+var timerStartTime: int = 0
+var timerTotalTime: int = 0
+
 
 # To be able to get the id from the firstMessage
 var firstMessage: bool = true
@@ -81,6 +87,7 @@ func _connected(_proto = ""):
 
 func _on_data():
 	var data = _client.get_peer(1).get_packet().get_string_from_utf8()
+	print_debug(data)
 	if firstMessage:
 		id = data
 		firstMessage = false
@@ -92,6 +99,8 @@ func _on_data():
 		players_done_loading = message["playersdoneloading"]
 		players = message["players"]
 		playerNames = message["playerNames"]
+		timerStartTime = message["timer"]
+		timerTotalTime = message["totalTime"]
 		emit_signal("change_to_game")
 	elif data.begins_with("3"):
 		var message = JSON.parse(data.substr(1)).result
@@ -99,6 +108,9 @@ func _on_data():
 	elif data.begins_with("4"):
 		var message = JSON.parse(data.substr(1)).result
 		process_vel_data(message)
+	elif data.begins_with("5"):
+		var message = JSON.parse(data.substr(1)).result
+		
 
 func process_vel_data(data: Dictionary):
 	var keys = data.keys()
@@ -160,6 +172,9 @@ func send_velocityData():
 	}
 	_client.get_peer(1).put_packet(("4"+JSON.print(data)).to_utf8())
 
+func _send_timer_timeout():
+	_client.get_peer(1).put_packet("1gametimer")
+
 func create_data_timer():
 	var timer: Timer = Timer.new()
 	timer.wait_time = 1.0/30
@@ -167,6 +182,16 @@ func create_data_timer():
 	timer.one_shot = false
 	timer.connect("timeout", self, "send_velocityData")
 	self.add_child(timer)
+	return timer
+
+func create_game_timer():
+	var timer: Timer = Timer.new()
+	timer.wait_time = timerTotalTime-(OS.get_unix_time()-timerStartTime)
+	timer.autostart = true
+	timer.one_shot = true
+	timer.connect("timeout",self,"_send_timer_timeout")
+	self.add_child(timer)
+	return timer
 
 func _process(_delta):
 	# Call this in _process or _physics_process. Data transfer, and signals

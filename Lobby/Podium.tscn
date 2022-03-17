@@ -1,13 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Lobby/Podium.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://Lobby/PodiumPlayer.gd" type="Script" id=2]
 [ext_resource path="res://MainMenu/MainMenu.tres" type="Theme" id=3]
-
-[sub_resource type="CapsuleMesh" id=1]
-
-[sub_resource type="SpatialMaterial" id=2]
-resource_local_to_scene = true
+[ext_resource path="res://Multiplayer/Models/xbot.tscn" type="PackedScene" id=4]
 
 [sub_resource type="ViewportTexture" id=3]
 viewport_path = NodePath("Spatial/Viewport")
@@ -18,13 +14,11 @@ mesh = ExtResource( 1 )
 material/0 = null
 
 [node name="Player" type="Spatial" parent="."]
-transform = Transform( 0.5, 0, 0, 0, -2.18557e-08, -0.5, 0, 0.5, -2.18557e-08, 0, 1.16965, 0 )
+transform = Transform( -2.18557e-08, -0.5, 2.18557e-08, 0, -2.18557e-08, -0.5, 0.5, -2.18557e-08, 9.55343e-16, 0, 1.16965, -0.0155506 )
 script = ExtResource( 2 )
 
-[node name="Player" type="MeshInstance" parent="Player"]
-mesh = SubResource( 1 )
-skeleton = NodePath("")
-material/0 = SubResource( 2 )
+[node name="xbot" parent="Player" instance=ExtResource( 4 )]
+transform = Transform( 2, 0, 0, 0, -8.74228e-08, 2, 0, -2, -8.74228e-08, 0, 7.07279e-08, 1.61806 )
 
 [node name="Spatial" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.35621, 0 )

@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://Game/Map/test map game.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Game/Map/map_game.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Game/TestEnviroment.tres" type="Environment" id=4]
 
 [sub_resource type="GIProbeData" id=5]
