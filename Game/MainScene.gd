@@ -6,12 +6,15 @@ onready var MultiplayerNode = get_node("/root/Multiplayer")
 var TIMERLABELFORMAT = "%02d:%02d"
 
 var gameTimer: Timer
+var dataTimer: Timer
 
 func _ready():
 	MultiplayerNode.send_lobbyloaded_message()
-	MultiplayerNode.create_data_timer()
+	dataTimer = MultiplayerNode.create_data_timer()
 	gameTimer = MultiplayerNode.create_game_timer()
 	print(gameTimer)
+	MultiplayerNode.connect("back_to_lobby",self,"_back_to_lobby")
+	$Control/ColorRect/Timer.connect("timeout",self,"animation_finished")
 
 func _process(_delta):
 	if gameTimer:
@@ -20,3 +23,11 @@ func _process(_delta):
 		var seconds_time_left = round(time_left-(minute_time_left*60)) 
 		
 		$Control/Label.text = (TIMERLABELFORMAT % [minute_time_left, seconds_time_left])
+	
+func _back_to_lobby():
+	$Control/ColorRect/AnimationPlayer.play_backwards("SceneTrans")
+	$Control/ColorRect/Timer.start()
+
+func animation_finished():
+	get_tree().change_scene("res://TransistionScene/TransistionScene.tscn")
+	dataTimer.stop()

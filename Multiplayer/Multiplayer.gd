@@ -6,6 +6,7 @@ signal back_to_lobby
 
 #default websocket_url
 export var websocket_url = "ws://localhost:8888/ws"
+var default_url = ""
 
 #WebsocketClients and if it is connected so you can check before sending any data
 var _client = WebSocketClient.new()
@@ -39,12 +40,16 @@ var players_done_loading: int
 var timerStartTime: int = 0
 var timerTotalTime: int = 0
 
-
 # To be able to get the id from the firstMessage
 var firstMessage: bool = true
 
 # Thing for spawning multiplayer players.
 var MultiplayerPlayer = preload("res://Multiplayer/MultiplayerPlayer.tscn")
+
+var gameOverData = {}
+
+func reset():
+	isReady = false
 
 func _ready():
 	set_process(false)
@@ -64,8 +69,12 @@ func _ready():
 
 func start_connection(url: String = ""):
 	# Initiate connection to the given URL.
-	if url == "":
+	if url == "" and default_url == "":
 		url = websocket_url
+	elif default_url != "":
+		url = default_url
+	else:
+		default_url = url
 	var err = _client.connect_to_url(url)
 	
 	if err != OK:
@@ -74,6 +83,9 @@ func start_connection(url: String = ""):
 	else:
 		isClientConnected = true
 		set_process(true)
+
+func stop_connection():
+	_client.disconnect_from_host()
 
 func _closed(was_clean = false):
 	# was_clean will tell you if the disconnection was correctly notified
@@ -110,6 +122,8 @@ func _on_data():
 		process_vel_data(message)
 	elif data.begins_with("5"):
 		var message = JSON.parse(data.substr(1)).result
+		gameOverData = message
+		emit_signal("back_to_lobby")
 		
 
 func process_vel_data(data: Dictionary):
@@ -172,8 +186,9 @@ func send_velocityData():
 	}
 	_client.get_peer(1).put_packet(("4"+JSON.print(data)).to_utf8())
 
+
 func _send_timer_timeout():
-	_client.get_peer(1).put_packet("1gametimer")
+	_client.get_peer(1).put_packet("1gametimer".to_utf8())
 
 func create_data_timer():
 	var timer: Timer = Timer.new()

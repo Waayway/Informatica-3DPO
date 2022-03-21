@@ -9,6 +9,7 @@ var PodiumPlayerWidth = 1.8
 onready var MultiplayerNode = get_node("/root/Multiplayer")
 
 func _ready():
+	MultiplayerNode.send_lobby_message()
 	MultiplayerNode.connect("lobby_new_player", self,"lobby_new_players")
 	MultiplayerNode.connect("change_to_game", self, "change_to_game")
 	$Timer.connect("timeout",self,"on_timer_timeout")
