@@ -55,9 +55,6 @@ margin_top = -200.0
 margin_right = 200.0
 margin_bottom = 200.0
 alignment = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Username" type="LineEdit" parent="Control/VBoxContainer"]
 margin_top = 141.0

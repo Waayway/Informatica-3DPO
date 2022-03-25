@@ -15,12 +15,17 @@ func _ready():
 	print(gameTimer)
 	MultiplayerNode.connect("back_to_lobby",self,"_back_to_lobby")
 	$Control/ColorRect/Timer.connect("timeout",self,"animation_finished")
+	if MultiplayerNode.id == MultiplayerNode.seeker:
+		$Control/SeekerLabel.text = "You are the Seeker"
+	else:
+		$Control/SeekerLabel.text = MultiplayerNode.playerNames[MultiplayerNode.seeker]+" is the Seeker"
+	$Control/ColorRect/AnimationPlayer.play("SeekerlabelFade")
 
 func _process(_delta):
 	if gameTimer:
-		var time_left = round(gameTimer.time_left)
-		var minute_time_left = round(time_left/60)
-		var seconds_time_left = round(time_left-(minute_time_left*60)) 
+		var time_left = int(round(gameTimer.time_left))
+		var minute_time_left = int(round(time_left/60))
+		var seconds_time_left = time_left%60
 		
 		$Control/Label.text = (TIMERLABELFORMAT % [minute_time_left, seconds_time_left])
 	

@@ -47,9 +47,11 @@ var firstMessage: bool = true
 var MultiplayerPlayer = preload("res://Multiplayer/MultiplayerPlayer.tscn")
 
 var gameOverData = {}
+var seeker = ""
 
 func reset():
 	isReady = false
+	seeker = ""
 
 func _ready():
 	set_process(false)
@@ -113,6 +115,7 @@ func _on_data():
 		playerNames = message["playerNames"]
 		timerStartTime = message["timer"]
 		timerTotalTime = message["totalTime"]
+		seeker = message["chosenplayer"]
 		emit_signal("change_to_game")
 	elif data.begins_with("3"):
 		var message = JSON.parse(data.substr(1)).result
@@ -136,6 +139,8 @@ func process_vel_data(data: Dictionary):
 		var instance = MultiplayerPlayer.instance()
 		instance.id = i
 		instance.username = playerNames[i]
+		if instance.id == seeker:
+			instance.isSeeker = true
 		self.add_child(instance)
 		instance_players[i] = instance
 		spawned_players.append(i)
