@@ -4,6 +4,9 @@ onready var camera = $RotationHelper/Camera
 onready var rotation_helper = $RotationHelper
 onready var ground_ray = $GroundRay
 
+onready var crosshairText1: Sprite = $SeekerUI/Crosshair1
+onready var crosshairText2: Sprite = $SeekerUI/Crosshair2
+
 var gravity = -30
 var max_speed = 8
 var max_sprint_speed = 16
@@ -22,9 +25,13 @@ const ANIMATION_STRAFE_RUN_LEFT = 4
 const ANIMATION_STRAFE_RIGHT = 5
 const ANIMATION_STRAFE_RUN_RIGHT = 6
 
+const RAY_LENGTH = 1000
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	if get_node("/root/Multiplayer").self_seeker:
+		$SeekerUI.show()
+		$SeekerUI.position = get_viewport().size/2
 
 func get_input():
 	var input_dir = Vector3.ZERO
@@ -94,3 +101,18 @@ func _physics_process(delta):
 	get_node("/root/Multiplayer").pos = global_transform.origin
 	get_node("/root/Multiplayer").rot = rotation_degrees
 	get_node("/root/Multiplayer").vel = velocity
+	
+	if get_node("/root/Multiplayer").self_seeker:
+		var colliding_object = $RotationHelper/Camera/CameraRay.get_collider()
+		if colliding_object:
+			if colliding_object.is_in_group("Player"):
+				crosshairText1.hide()
+				crosshairText2.show()
+				if Input.is_action_just_pressed("find"):
+					print("found: "+colliding_object.id)
+			else:
+				crosshairText1.show()
+				crosshairText2.hide()
+		else:
+			crosshairText1.show()
+			crosshairText2.hide()

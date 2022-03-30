@@ -48,6 +48,7 @@ var MultiplayerPlayer = preload("res://Multiplayer/MultiplayerPlayer.tscn")
 
 var gameOverData = {}
 var seeker = ""
+var self_seeker = false
 
 func reset():
 	isReady = false
@@ -101,7 +102,6 @@ func _connected(_proto = ""):
 
 func _on_data():
 	var data = _client.get_peer(1).get_packet().get_string_from_utf8()
-	print_debug(data)
 	if firstMessage:
 		id = data
 		firstMessage = false
@@ -116,6 +116,7 @@ func _on_data():
 		timerStartTime = message["timer"]
 		timerTotalTime = message["totalTime"]
 		seeker = message["chosenplayer"]
+		self_seeker = seeker == id
 		emit_signal("change_to_game")
 	elif data.begins_with("3"):
 		var message = JSON.parse(data.substr(1)).result

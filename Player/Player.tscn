@@ -1,6 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Player/Player.gd" type="Script" id=1]
+[ext_resource path="res://Player/Crosshair2.png" type="Texture" id=2]
+[ext_resource path="res://Player/Crosshair1.png" type="Texture" id=3]
 
 [sub_resource type="CapsuleShape" id=1]
 
@@ -25,6 +27,19 @@ current = true
 near = 0.02
 far = 8192.0
 
+[node name="CameraRay" type="RayCast" parent="RotationHelper/Camera"]
+enabled = true
+cast_to = Vector3( 0, 0, -10 )
+
 [node name="GroundRay" type="RayCast" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.47765, 0 )
 enabled = true
+
+[node name="SeekerUI" type="Node2D" parent="."]
+visible = false
+
+[node name="Crosshair1" type="Sprite" parent="SeekerUI"]
+texture = ExtResource( 3 )
+
+[node name="Crosshair2" type="Sprite" parent="SeekerUI"]
+texture = ExtResource( 2 )

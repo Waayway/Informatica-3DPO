@@ -10,7 +10,7 @@ radius = 0.946709
 [sub_resource type="ViewportTexture" id=2]
 viewport_path = NodePath("Spatial/Viewport")
 
-[node name="MultiplayerPlayer" type="KinematicBody"]
+[node name="MultiplayerPlayer" type="KinematicBody" groups=["Player"]]
 script = ExtResource( 1 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]

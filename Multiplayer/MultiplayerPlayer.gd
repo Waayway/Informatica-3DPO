@@ -14,7 +14,7 @@ var isSeeker = false
 func _ready():
 	get_node("Spatial/Viewport/Label").text = username
 	anim.play("IdleAnimation")
-	get_node("xbot/RootNode/Beta_Surface").material_override.albedo_color = Color.aqua
+#	get_node("xbot/RootNode/Beta_Surface").material_override.albedo_color = Color.aqua
 
 func _process(delta):
 	move_and_slide(vel)
