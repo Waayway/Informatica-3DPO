@@ -39,7 +39,7 @@ enabled = true
 visible = false
 
 [node name="Crosshair1" type="Sprite" parent="SeekerUI"]
-texture = ExtResource( 3 )
+texture = ExtResource( 2 )
 
 [node name="Crosshair2" type="Sprite" parent="SeekerUI"]
-texture = ExtResource( 2 )
+texture = ExtResource( 3 )

@@ -110,6 +110,7 @@ func _physics_process(delta):
 				crosshairText2.show()
 				if Input.is_action_just_pressed("find"):
 					print("found: "+colliding_object.id)
+					get_node("/root/Multiplayer").send_player_found(colliding_object.id)
 			else:
 				crosshairText1.show()
 				crosshairText2.hide()

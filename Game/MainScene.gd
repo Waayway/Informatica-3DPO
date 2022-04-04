@@ -1,7 +1,7 @@
 extends Spatial
 
 onready var MultiplayerNode = get_node("/root/Multiplayer")
-
+onready var world_enviroment: WorldEnvironment = $Map/WorldEnvironment
 
 var TIMERLABELFORMAT = "%02d:%02d"
 

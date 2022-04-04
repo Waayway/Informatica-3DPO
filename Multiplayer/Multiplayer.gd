@@ -4,6 +4,9 @@ signal lobby_new_player(players, data)
 signal change_to_game
 signal back_to_lobby
 
+signal death # will emit when someone was found
+signal spectate # will emit when u are found
+
 #default websocket_url
 export var websocket_url = "ws://localhost:8888/ws"
 var default_url = ""
@@ -49,11 +52,14 @@ var MultiplayerPlayer = preload("res://Multiplayer/MultiplayerPlayer.tscn")
 var gameOverData = {}
 var seeker = ""
 var self_seeker = false
+var players_found = []
 
 func reset():
 	isReady = false
 	seeker = ""
-
+	dataSendTimer.queue_free()
+	dataSendTimer = Timer.new()
+	
 func _ready():
 	set_process(false)
 	# Connect base signals to get notified of connection open, close, and errors.
@@ -64,11 +70,7 @@ func _ready():
 	# a full packet is received.
 	# Alternatively, you could check get_peer(1).get_available_packets() in a loop.
 	_client.connect("data_received", self, "_on_data")
-	
-	# Set a timer for sending date 30 times a second
-	dataSendTimer.wait_time = 1.0/30.0
-	dataSendTimer.autostart = true
-	dataSendTimer.connect("timeout",self, "send_data")
+
 
 func start_connection(url: String = ""):
 	# Initiate connection to the given URL.
@@ -128,6 +130,13 @@ func _on_data():
 		var message = JSON.parse(data.substr(1)).result
 		gameOverData = message
 		emit_signal("back_to_lobby")
+	elif data.begins_with("6"):
+		players_found.append(data.substr(1))
+		if data.substr(1) == id:
+			emit_signal("spectate")
+		else:
+			emit_signal("death")
+			instance_players[data.substr(1)].queue_free()
 		
 
 func process_vel_data(data: Dictionary):
@@ -196,18 +205,21 @@ func send_velocityData():
 func _send_timer_timeout():
 	_client.get_peer(1).put_packet("1gametimer".to_utf8())
 
+func send_player_found(id):
+	var data = {"playerFound": id}
+	_client.get_peer(1).put_packet(("5"+JSON.print(data)).to_utf8())
+
 func create_data_timer():
-	var timer: Timer = Timer.new()
-	timer.wait_time = 1.0/30
-	timer.autostart = true
-	timer.one_shot = false
-	timer.connect("timeout", self, "send_velocityData")
-	self.add_child(timer)
-	return timer
+	dataSendTimer.wait_time = 1.0/30
+	dataSendTimer.autostart = true
+	dataSendTimer.one_shot = false
+	dataSendTimer.connect("timeout", self, "send_velocityData")
+	self.add_child(dataSendTimer)
+	return dataSendTimer
 
 func create_game_timer():
 	var timer: Timer = Timer.new()
-	timer.wait_time = timerTotalTime-(OS.get_unix_time()-timerStartTime)
+	timer.wait_time = timerTotalTime-timerStartTime
 	timer.autostart = true
 	timer.one_shot = true
 	timer.connect("timeout",self,"_send_timer_timeout")

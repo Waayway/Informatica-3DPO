@@ -1,0 +1,5 @@
+Algemeen, Kamers boven steken door grond heen
+Buizenkamer: Werkt goed, alleen ingang/uitgang is bugged
+Minecart met track, mist buiten track
+Gek circkel ding kamer, de uv doet het nu wel behalve 1 surface.
+Maze, Moet een solidify modifier op, is te dun kan hoeken niet zien

@@ -1,10 +1,14 @@
 extends Control
 
+var gameOverData: Dictionary
 
 func _ready():
 	$AnimationPlayer.play_backwards("SceneTrans")
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	get_node("/root/Multiplayer").reset()
+	gameOverData = get_node("/root/Multiplayer").gameOverData
+	if not gameOverData["hiders"]:
+		$VBoxContainer/Label.text = "The Seeker won"
 
 
 func _on_Button_pressed():

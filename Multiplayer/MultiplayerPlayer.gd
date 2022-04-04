@@ -14,7 +14,10 @@ var isSeeker = false
 func _ready():
 	get_node("Spatial/Viewport/Label").text = username
 	anim.play("IdleAnimation")
-#	get_node("xbot/RootNode/Beta_Surface").material_override.albedo_color = Color.aqua
+	if isSeeker:
+		var mat = get_node("xbot/RootNode/Beta_Joints").get_surface_material(0).duplicate()
+		mat.albedo_color = Color.purple
+		get_node("xbot/RootNode/Beta_Joints").set_surface_material(0,mat)
 
 func _process(delta):
 	move_and_slide(vel)
