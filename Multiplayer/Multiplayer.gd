@@ -137,6 +137,7 @@ func _on_data():
 		else:
 			emit_signal("death")
 			instance_players[data.substr(1)].queue_free()
+			instance_players.erase(data.substr(1))
 		
 
 func process_vel_data(data: Dictionary):
@@ -156,13 +157,15 @@ func process_vel_data(data: Dictionary):
 		spawned_players.append(i)
 	
 	for i in keys:
-		instance_players[i].apply_data(data[i])
+		if i in instance_players:
+			instance_players[i].apply_data(data[i])
 
 func get_lobby_data(data: Dictionary):
 	var list = data["players"].keys()
 	emit_signal("lobby_new_player", list, data)
 
 func send_lobby_message():
+	print_debug("sending lobby message")
 	_client.get_peer(1).put_packet(('0{"'+id+'": '+str(isReady).to_lower()+'}').to_utf8())
 
 func send_lobbyloaded_message():

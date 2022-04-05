@@ -44,7 +44,7 @@ func lobby_new_players(players: Array, fullDict: Dictionary):
 	for i in loadedPlayers:
 		if fullDict["players"][i].keys().has("name") and loadedPlayers.find(i) != -1:
 			if fullDict["players"][i]["name"].empty():
-				MultiplayerNode.send_lobby_message()
+#				MultiplayerNode.send_lobby_message()
 				break
 			loadedPlayerInstances[loadedPlayers.find(i)].get_child(0).change_name_above_head(fullDict["players"][i]["name"])
 	
