@@ -165,7 +165,6 @@ func get_lobby_data(data: Dictionary):
 	emit_signal("lobby_new_player", list, data)
 
 func send_lobby_message():
-	print_debug("sending lobby message")
 	_client.get_peer(1).put_packet(('0{"'+id+'": '+str(isReady).to_lower()+'}').to_utf8())
 
 func send_lobbyloaded_message():
