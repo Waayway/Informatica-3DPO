@@ -18,6 +18,10 @@ func _ready():
 		var mat = get_node("xbot/RootNode/Beta_Joints").get_surface_material(0).duplicate()
 		mat.albedo_color = Color.purple
 		get_node("xbot/RootNode/Beta_Joints").set_surface_material(0,mat)
+	else:
+		var mat = get_node("xbot/RootNode/Beta_Joints").get_surface_material(0).duplicate()
+		mat.albedo_color = Color.aqua
+		get_node("xbot/RootNode/Beta_Joints").set_surface_material(0,mat)
 
 func _process(delta):
 	move_and_slide(vel)

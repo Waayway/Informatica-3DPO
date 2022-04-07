@@ -14,9 +14,12 @@ func _ready():
 	gameTimer = MultiplayerNode.create_game_timer()
 	print(gameTimer)
 	MultiplayerNode.connect("back_to_lobby",self,"_back_to_lobby")
+	MultiplayerNode.connect("spectate", self,"spectate")
 	$Control/ColorRect/Timer.connect("timeout",self,"animation_finished")
 	if MultiplayerNode.id == MultiplayerNode.seeker:
 		$Control/SeekerLabel.text = "You are the Seeker"
+		$Control/BlackScreen.show()
+		$Player.translation = $PossibleSpawnPositions/SeekerSpawn.translation
 	else:
 		$Control/SeekerLabel.text = MultiplayerNode.playerNames[MultiplayerNode.seeker]+" is the Seeker"
 	$Control/ColorRect/AnimationPlayer.play("SeekerlabelFade")
@@ -36,3 +39,6 @@ func _back_to_lobby():
 func animation_finished():
 	get_tree().change_scene("res://TransistionScene/TransistionScene.tscn")
 	dataTimer.stop()
+
+func spectate():
+	$Control/ColorRect/AnimationPlayer.play("FoundAnim")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Game/Map.tscn" type="PackedScene" id=1]
 [ext_resource path="res://MainMenu/MainMenu.tres" type="Theme" id=2]
@@ -12,6 +12,22 @@ font_path = "res://data/fonts/Ubuntu-Bold.ttf"
 [sub_resource type="DynamicFont" id=2]
 size = 48
 font_data = SubResource( 1 )
+
+[sub_resource type="Animation" id=6]
+resource_name = "FoundAnim"
+length = 6.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("../FoundLabel:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 4.5, 6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
 
 [sub_resource type="Animation" id=3]
 length = 0.001
@@ -75,6 +91,30 @@ tracks/5/keys = {
 "points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
 "times": PoolRealArray( 0 )
 }
+tracks/6/type = "value"
+tracks/6/path = NodePath("../BlackScreen:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("../FoundLabel:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ) ]
+}
 
 [sub_resource type="Animation" id=4]
 resource_name = "SceneTrans"
@@ -92,6 +132,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=5]
 resource_name = "SeekerlabelFade"
+length = 10.0
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("../SeekerLabel:modulate:r")
 tracks/0/interp = 1
@@ -100,7 +141,7 @@ tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
 "points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 1 )
+"times": PoolRealArray( 0, 1.9 )
 }
 tracks/1/type = "bezier"
 tracks/1/path = NodePath("../SeekerLabel:modulate:g")
@@ -110,7 +151,7 @@ tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
 "points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 1 )
+"times": PoolRealArray( 0, 1.9 )
 }
 tracks/2/type = "bezier"
 tracks/2/path = NodePath("../SeekerLabel:modulate:b")
@@ -120,7 +161,7 @@ tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
 "points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 1 )
+"times": PoolRealArray( 0, 1.9 )
 }
 tracks/3/type = "bezier"
 tracks/3/path = NodePath("../SeekerLabel:modulate:a")
@@ -130,7 +171,19 @@ tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
 "points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.5, 1 )
+"times": PoolRealArray( 0, 0.5, 1.9 )
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("../BlackScreen:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 9, 10 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
 
 [node name="MainScene" type="Spatial"]
@@ -146,6 +199,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17.516, 20.5597, -7.70558 )
 
 [node name="2" type="Spatial" parent="PossibleSpawnPositions"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8882, 5.43394, -56.0787 )
+
+[node name="SeekerSpawn" type="Spatial" parent="PossibleSpawnPositions"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -101.287, 25.0951, -86.0595 )
 
 [node name="LoadingScreen" parent="." instance=ExtResource( 4 )]
 visible = false
@@ -170,11 +226,24 @@ text = "f"
 align = 1
 valign = 1
 
+[node name="FoundLabel" type="Label" parent="Control"]
+modulate = Color( 1, 1, 1, 0 )
+anchor_right = 1.0
+margin_left = -2.0
+margin_top = 91.0
+margin_right = -2.0
+margin_bottom = 168.0
+text = "You've been found,
+ You can now spectate"
+align = 1
+valign = 1
+
 [node name="ColorRect" type="ColorRect" parent="Control"]
 anchor_bottom = 1.0
 color = Color( 0, 0.505882, 0.529412, 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Control/ColorRect"]
+anims/FoundAnim = SubResource( 6 )
 anims/RESET = SubResource( 3 )
 anims/SceneTrans = SubResource( 4 )
 anims/SeekerlabelFade = SubResource( 5 )
@@ -182,6 +251,13 @@ anims/SeekerlabelFade = SubResource( 5 )
 [node name="Timer" type="Timer" parent="Control/ColorRect"]
 wait_time = 0.5
 one_shot = true
+
+[node name="BlackScreen" type="ColorRect" parent="Control"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 1 )
 
 [node name="SeekerLabel" type="Label" parent="Control"]
 anchor_top = 0.5
