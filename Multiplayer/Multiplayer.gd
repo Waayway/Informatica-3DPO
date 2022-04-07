@@ -59,6 +59,10 @@ func reset():
 	seeker = ""
 	dataSendTimer.queue_free()
 	dataSendTimer = Timer.new()
+	for i in instance_players.keys():
+		instance_players[i].queue_free()
+	instance_players.clear()
+	spawned_players.clear()
 	
 func _ready():
 	set_process(false)
@@ -118,6 +122,7 @@ func _on_data():
 		timerStartTime = message["timer"]
 		timerTotalTime = message["totalTime"]
 		seeker = message["chosenplayer"]
+		print_debug(seeker)
 		self_seeker = seeker == id
 		emit_signal("change_to_game")
 	elif data.begins_with("3"):
@@ -138,7 +143,6 @@ func _on_data():
 			emit_signal("death")
 			instance_players[data.substr(1)].queue_free()
 			instance_players.erase(data.substr(1))
-		
 
 func process_vel_data(data: Dictionary):
 	var keys = data.keys()
@@ -152,6 +156,7 @@ func process_vel_data(data: Dictionary):
 		instance.username = playerNames[i]
 		if instance.id == seeker:
 			instance.isSeeker = true
+			print(instance.isSeeker)
 		self.add_child(instance)
 		instance_players[i] = instance
 		spawned_players.append(i)

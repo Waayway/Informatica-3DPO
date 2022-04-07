@@ -195,13 +195,28 @@ script = ExtResource( 5 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17.516, 3.54374, 18.9765 )
 
 [node name="1" type="Spatial" parent="PossibleSpawnPositions"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17.516, 20.5597, -7.70558 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -67.931, 11.9156, -11.8166 )
 
 [node name="2" type="Spatial" parent="PossibleSpawnPositions"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8882, 5.43394, -56.0787 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.84599, 5.43394, -87.8162 )
 
-[node name="SeekerSpawn" type="Spatial" parent="PossibleSpawnPositions"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -101.287, 25.0951, -86.0595 )
+[node name="3" type="Spatial" parent="PossibleSpawnPositions"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.84599, 32.1063, -87.8162 )
+
+[node name="4" type="Spatial" parent="PossibleSpawnPositions"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 59.4293, 32.0117, 79.0176 )
+
+[node name="5" type="Spatial" parent="PossibleSpawnPositions"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 17.9134, 3.54374, 18.9765 )
+
+[node name="6" type="Spatial" parent="PossibleSpawnPositions"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.21161, 4.56282, -91.7884 )
+
+[node name="7" type="Spatial" parent="PossibleSpawnPositions"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -82.2006, 8.07486, -63.2816 )
+
+[node name="SeekerSpawn" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5109, 25.41, 33.6304 )
 
 [node name="LoadingScreen" parent="." instance=ExtResource( 4 )]
 visible = false

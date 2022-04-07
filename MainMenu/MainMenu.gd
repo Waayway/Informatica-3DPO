@@ -17,9 +17,9 @@ func _ready():
 func _on_Button_pressed():
 	#WARNING, REMOVE IPTEXT.empty IN FINAL BUILD
 	var IPtext = IPInput.text
-	if (IPRegex.search(IPtext) or HostnameRegex.search(IPtext) or not IPtext.empty()) and not UsernameInput.text.empty():
+	if (IPRegex.search(IPtext) or HostnameRegex.search(IPtext)) and not UsernameInput.text.empty():
 		get_node("/root/Multiplayer").username = UsernameInput.text
-		get_node("/root/Multiplayer").start_connection(IPtext)
+		get_node("/root/Multiplayer").start_connection("ws://"+IPtext+":8888/ws")
 		get_tree().change_scene("res://Lobby/Lobby.tscn")
 
 func _on_Options_pressed():
