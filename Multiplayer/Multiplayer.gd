@@ -54,6 +54,8 @@ var seeker = ""
 var self_seeker = false
 var players_found = []
 
+var map_used = 0
+
 func reset():
 	isReady = false
 	seeker = ""
@@ -180,7 +182,8 @@ func send_timer_timeout():
 
 func send_first_message():
 	var data = {
-		"name": username
+		"name": username,
+		"prefered_map": map_used
 	}
 	_client.get_peer(1).put_packet(JSON.print(data).to_utf8())
 

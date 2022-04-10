@@ -17,6 +17,10 @@ func _ready():
 func _process(delta):
 	$Control/Label.text = str(round($Timer.time_left))
 
+func _input(event):
+	if Input.is_action_just_pressed("toggle_fullscreen"):
+		OS.window_fullscreen = !OS.window_fullscreen
+
 func lobby_new_players(players: Array, fullDict: Dictionary):
 	if "timer" in fullDict:
 		$Control/Label.show()
@@ -24,7 +28,7 @@ func lobby_new_players(players: Array, fullDict: Dictionary):
 		$Timer.start()
 	#check if object has the lobby data needed
 	if !("lobbydata" in fullDict["players"][players[0]].keys()): return
-	# Check id if ready and update color or animation, idk what will change eventually
+	
 	for i in loadedPlayerInstances:
 		i.get_child(0).change_color_to_ready(fullDict["players"][i.get_child(0).id]["lobbydata"])
 		

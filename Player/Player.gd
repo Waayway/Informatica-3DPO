@@ -34,6 +34,13 @@ func _ready():
 		$SeekerUI.position = get_viewport().size/2
 
 func get_input():
+	if Input.is_action_just_pressed("toggle_fullscreen"):
+		OS.window_fullscreen = !OS.window_fullscreen
+	if Input.is_action_just_pressed("toggle_mouse_capture"):
+		if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		else:
+			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	var input_dir = Vector3.ZERO
 	var smooving: bool = false
 	var strafin: int = 0

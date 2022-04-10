@@ -19,10 +19,10 @@ func _ready():
 	if MultiplayerNode.id == MultiplayerNode.seeker:
 		$Control/SeekerLabel.text = "You are the Seeker"
 		$Control/BlackScreen.show()
-		$Player.translation = $SeekerSpawn.translation
+		$Player.translation = $Map/SeekerSpawn.translation
 	else:
 		$Control/SeekerLabel.text = MultiplayerNode.playerNames[MultiplayerNode.seeker]+" is the Seeker"
-		var possibleSpawnPos = $PossibleSpawnPositions.get_children()
+		var possibleSpawnPos = $Map/PossibleSpawnPositions.get_children()
 		$Player.translation = possibleSpawnPos[randi()%possibleSpawnPos.size()].translation
 	$Control/ColorRect/AnimationPlayer.play("SeekerlabelFade")
 
