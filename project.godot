@@ -19,6 +19,10 @@ config/icon="res://icon.png"
 
 Multiplayer="*res://Multiplayer/Multiplayer.gd"
 
+[global]
+
+msaa=false
+
 [importer_defaults]
 
 texture={
@@ -100,5 +104,4 @@ common/enable_pause_aware_picking=true
 quality/shadows/filter_mode=2
 quality/subsurface_scattering/quality=2
 quality/filters/msaa=3
-quality/filters/use_fxaa=true
 environment/default_environment="res://default_env.tres"
