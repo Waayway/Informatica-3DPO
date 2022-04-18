@@ -1,0 +1,8 @@
+{
+	"contains_albedo": true,
+	"resolution": 512,
+	"src": {
+		"a": "#ff888888",
+		"rgb": "res://Game/Map1/texture/test texture/Orange/texture_01.png"
+	}
+}
