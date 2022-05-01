@@ -1,0 +1,292 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Settings/SettingsTheme.tres" type="Theme" id=1]
+[ext_resource path="res://Settings/SettingsMenu.gd" type="Script" id=2]
+[ext_resource path="res://Settings/ResolutionButtonGroup.tres" type="ButtonGroup" id=3]
+[ext_resource path="res://addons/kenney_ui_audio/click1.wav" type="AudioStream" id=4]
+
+[node name="Settings" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="Container" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 4
+
+[node name="Utilities" type="VBoxContainer" parent="Container"]
+margin_right = 338.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+
+[node name="Utilities" type="Label" parent="Container/Utilities"]
+margin_right = 338.0
+margin_bottom = 37.0
+text = "Utilities"
+align = 1
+
+[node name="Fullscreen" type="HBoxContainer" parent="Container/Utilities"]
+margin_top = 41.0
+margin_right = 338.0
+margin_bottom = 81.0
+alignment = 1
+
+[node name="Label" type="Label" parent="Container/Utilities/Fullscreen"]
+margin_left = 48.0
+margin_top = 1.0
+margin_right = 210.0
+margin_bottom = 38.0
+text = "Fullscreen:"
+
+[node name="FullscreenToggle" type="CheckButton" parent="Container/Utilities/Fullscreen"]
+margin_left = 214.0
+margin_right = 290.0
+margin_bottom = 40.0
+
+[node name="Performance" type="VBoxContainer" parent="Container"]
+margin_left = 342.0
+margin_right = 681.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+custom_constants/separation = 10
+
+[node name="Performance" type="Label" parent="Container/Performance"]
+margin_right = 339.0
+margin_bottom = 37.0
+text = "Performance"
+align = 1
+
+[node name="FpsLimitLabel" type="Label" parent="Container/Performance"]
+margin_top = 47.0
+margin_right = 339.0
+margin_bottom = 84.0
+text = "Fps Limit:"
+
+[node name="FpsLimit" type="HBoxContainer" parent="Container/Performance"]
+margin_top = 94.0
+margin_right = 339.0
+margin_bottom = 131.0
+
+[node name="Label" type="Label" parent="Container/Performance/FpsLimit"]
+margin_right = 193.0
+margin_bottom = 37.0
+text = "Display Limit"
+
+[node name="FpsLimitSlider" type="HSlider" parent="Container/Performance/FpsLimit"]
+margin_left = 197.0
+margin_right = 280.0
+margin_bottom = 37.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+max_value = 240.0
+rounded = true
+
+[node name="Label2" type="Label" parent="Container/Performance/FpsLimit"]
+margin_left = 284.0
+margin_right = 339.0
+margin_bottom = 37.0
+text = "240"
+
+[node name="Vsync" type="HBoxContainer" parent="Container/Performance"]
+margin_top = 141.0
+margin_right = 339.0
+margin_bottom = 181.0
+
+[node name="Label" type="Label" parent="Container/Performance/Vsync"]
+margin_top = 1.0
+margin_right = 96.0
+margin_bottom = 38.0
+text = "Vsync:"
+
+[node name="VsyncToggle" type="CheckButton" parent="Container/Performance/Vsync"]
+margin_left = 100.0
+margin_right = 176.0
+margin_bottom = 40.0
+
+[node name="Resolution" type="GridContainer" parent="Container/Performance"]
+margin_top = 191.0
+margin_right = 339.0
+margin_bottom = 263.0
+columns = 3
+
+[node name="540P" type="Button" parent="Container/Performance/Resolution"]
+margin_right = 110.0
+margin_bottom = 34.0
+size_flags_horizontal = 3
+toggle_mode = true
+group = ExtResource( 3 )
+text = "540P"
+
+[node name="720P" type="Button" parent="Container/Performance/Resolution"]
+margin_left = 114.0
+margin_right = 224.0
+margin_bottom = 34.0
+size_flags_horizontal = 3
+toggle_mode = true
+group = ExtResource( 3 )
+text = "720P"
+
+[node name="1080P" type="Button" parent="Container/Performance/Resolution"]
+margin_left = 228.0
+margin_right = 338.0
+margin_bottom = 34.0
+size_flags_horizontal = 3
+toggle_mode = true
+group = ExtResource( 3 )
+text = "1080P"
+
+[node name="1440P" type="Button" parent="Container/Performance/Resolution"]
+margin_top = 38.0
+margin_right = 110.0
+margin_bottom = 72.0
+toggle_mode = true
+group = ExtResource( 3 )
+text = "1440P"
+
+[node name="4K" type="Button" parent="Container/Performance/Resolution"]
+margin_left = 114.0
+margin_top = 38.0
+margin_right = 224.0
+margin_bottom = 72.0
+toggle_mode = true
+group = ExtResource( 3 )
+text = "4K"
+
+[node name="Native" type="Button" parent="Container/Performance/Resolution"]
+margin_left = 228.0
+margin_top = 38.0
+margin_right = 338.0
+margin_bottom = 72.0
+toggle_mode = true
+pressed = true
+group = ExtResource( 3 )
+text = "Native"
+
+[node name="Sound" type="VBoxContainer" parent="Container"]
+margin_left = 685.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+
+[node name="Sound" type="Label" parent="Container/Sound"]
+margin_right = 339.0
+margin_bottom = 37.0
+text = "Sound"
+align = 1
+
+[node name="MasterAudioLabel" type="Label" parent="Container/Sound"]
+margin_top = 41.0
+margin_right = 339.0
+margin_bottom = 78.0
+text = "Master:"
+
+[node name="MasterAudioHBox" type="HBoxContainer" parent="Container/Sound"]
+margin_top = 82.0
+margin_right = 339.0
+margin_bottom = 119.0
+
+[node name="PercentageNumberLabel" type="Label" parent="Container/Sound/MasterAudioHBox"]
+margin_right = 111.0
+margin_bottom = 37.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "80%"
+
+[node name="MasterAudioSlider" type="HSlider" parent="Container/Sound/MasterAudioHBox"]
+margin_left = 115.0
+margin_right = 339.0
+margin_bottom = 37.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+min_value = -1.0
+
+[node name="MusicAudioLabel" type="Label" parent="Container/Sound"]
+margin_top = 123.0
+margin_right = 339.0
+margin_bottom = 160.0
+text = "Music:"
+
+[node name="MusicAudioHbox" type="HBoxContainer" parent="Container/Sound"]
+margin_top = 164.0
+margin_right = 339.0
+margin_bottom = 201.0
+
+[node name="PercentageNumberLabel" type="Label" parent="Container/Sound/MusicAudioHbox"]
+margin_right = 111.0
+margin_bottom = 37.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "80%"
+
+[node name="MusicAudioSlider" type="HSlider" parent="Container/Sound/MusicAudioHbox"]
+margin_left = 115.0
+margin_right = 339.0
+margin_bottom = 37.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+min_value = -1.0
+
+[node name="SoundfxAudioLabel" type="Label" parent="Container/Sound"]
+margin_top = 205.0
+margin_right = 339.0
+margin_bottom = 242.0
+text = "Sound Effects:"
+
+[node name="SoundfxHbox" type="HBoxContainer" parent="Container/Sound"]
+margin_top = 246.0
+margin_right = 339.0
+margin_bottom = 283.0
+
+[node name="PercentageNumberLabel" type="Label" parent="Container/Sound/SoundfxHbox"]
+margin_right = 111.0
+margin_bottom = 37.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "80%"
+
+[node name="SoundfxSlider" type="HSlider" parent="Container/Sound/SoundfxHbox"]
+margin_left = 115.0
+margin_right = 339.0
+margin_bottom = 37.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+min_value = -1.0
+
+[node name="ExitButton" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -187.5
+margin_top = -130.0
+margin_right = 187.5
+margin_bottom = -70.0
+text = "Exit"
+
+[node name="ApplyButton" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -187.5
+margin_top = -60.0
+margin_right = 187.5
+text = "Apply"
+
+[node name="Audio" type="Node" parent="."]
+
+[node name="SliderSoundChange" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource( 4 )
+bus = "SoundEffects"
+
+[connection signal="visibility_changed" from="." to="." method="_on_Settings_visibility_changed"]
+[connection signal="toggled" from="Container/Utilities/Fullscreen/FullscreenToggle" to="." method="_on_FullscreenToggle_toggled"]
+[connection signal="value_changed" from="Container/Performance/FpsLimit/FpsLimitSlider" to="." method="_on_FpsLimitSlider_value_changed"]
+[connection signal="toggled" from="Container/Performance/Vsync/VsyncToggle" to="." method="_on_VsyncToggle_toggled"]
+[connection signal="value_changed" from="Container/Sound/MasterAudioHBox/MasterAudioSlider" to="." method="_on_MasterAudioSlider_value_changed"]
+[connection signal="value_changed" from="Container/Sound/MusicAudioHbox/MusicAudioSlider" to="." method="_on_MusicAudioSlider_value_changed"]
+[connection signal="value_changed" from="Container/Sound/SoundfxHbox/SoundfxSlider" to="." method="_on_SoundfxSlider_value_changed"]
+[connection signal="pressed" from="ExitButton" to="." method="_on_ExitButton_pressed"]
+[connection signal="pressed" from="ApplyButton" to="." method="_on_ApplyButton_pressed"]

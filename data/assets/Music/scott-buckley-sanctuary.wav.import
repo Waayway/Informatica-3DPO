@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/scott-buckley-sanctuary.wav-d25ea9633f2c148fb0b9d7196a06a43c.sample"
+
+[deps]
+
+source_file="res://data/assets/Music/scott-buckley-sanctuary.wav"
+dest_files=[ "res://.import/scott-buckley-sanctuary.wav-d25ea9633f2c148fb0b9d7196a06a43c.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=true
+compress/mode=0

@@ -17,9 +17,6 @@ func _ready():
 func _process(delta):
 	$Control/Label.text = str(round($Timer.time_left))
 
-func _input(event):
-	if Input.is_action_just_pressed("toggle_fullscreen"):
-		OS.window_fullscreen = !OS.window_fullscreen
 
 func lobby_new_players(players: Array, fullDict: Dictionary):
 	if "timer" in fullDict:

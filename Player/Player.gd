@@ -1,126 +1,216 @@
 extends KinematicBody
 
-onready var camera = $RotationHelper/Camera
-onready var rotation_helper = $RotationHelper
-onready var ground_ray = $GroundRay
 
-onready var crosshairText1: Sprite = $SeekerUI/Crosshair1
-onready var crosshairText2: Sprite = $SeekerUI/Crosshair2
+##
+## Load the MultiplayerNode so it is easier to access from this script
+##
+onready var multiplayer_node = get_node("/root/Multiplayer")
 
-var gravity = -30
-var max_speed = 8
-var max_sprint_speed = 16
+
+##
+## Load all camera related Nodes, so the camera and pivot, which are both needed
+##
+onready var camera = $Pivot/Camera
+onready var pivot = $Pivot
+onready var camera_raycast = $Pivot/Camera/CameraRay
+
+
+##
+## Seeker UI Elements, namely the 2 crosshairs. and the overarching node above it.
+## You can show and hide both depending on situation, But Seeker
+##
+onready var seeker_ui: Node2D = $SeekerUI
+onready var crosshair1: Sprite = $SeekerUI/Crosshair1
+onready var crosshair2: Sprite = $SeekerUI/Crosshair2
+
+
+##
+## Movement Variables and constants.
+##
+export var gravity: float = -20
+export var max_speed: float = 16
+export var max_sprint_speed: float = 20
+export var ground_acceleration: float = 10
+export var air_acceleration: float = 2
+export var air_time_multiplier: float = 0.2
+var cur_speed = 0
 var cur_max_speed = max_speed
 var jump_speed = 10
 var mouse_sensitivity = 0.002  # radians/pixel
-
 var velocity = Vector3.ZERO
+var acceleration: float = ground_acceleration
+var air_time: float = 0
 
-var animationBlendValue: int = 0
-const ANIMATION_IDLE = 0
-const ANIMATION_WALK = 1
-const ANIMATION_RUN = 2
-const ANIMATION_STRAFE_LEFT = 3
-const ANIMATION_STRAFE_RUN_LEFT = 4
-const ANIMATION_STRAFE_RIGHT = 5
-const ANIMATION_STRAFE_RUN_RIGHT = 6
+##
+## Animation variables and constants, the cur_anim will be sent via the multiplayer script
+##
+var cur_anim: int = 0
+var cur_anim_reversed: bool = false
+enum Animations {
+	Idle = 0,
+	Walk = 1,
+	Run = 2,
+	StrafeLeft = 3,
+	StrafeRunLeft = 4,
+	StrafeRight = 5,
+	StrafeRunRight = 6,
+}
 
-const RAY_LENGTH = 1000
-
-func _ready():
+##
+## Ready, Set Mouse mode and show seeker ui if player is seeker. 
+## Slight flaw with code is that window resize will not set the ui in the middle position again.
+##
+func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	if get_node("/root/Multiplayer").self_seeker:
-		$SeekerUI.show()
-		$SeekerUI.position = get_viewport().size/2
+	if multiplayer_node.self_seeker:
+		seeker_ui.show()
+		seeker_ui.position = get_viewport().size/2
 
-func get_input():
-	if Input.is_action_just_pressed("toggle_fullscreen"):
-		OS.window_fullscreen = !OS.window_fullscreen
+
+##
+## Default Godot function. execute other functions like input() and the rest of the movement code.
+##
+func _physics_process(delta: float) -> void:
+	input()
+	execute_gravity_and_jump(delta)
+	get_animation_state()
+	movement(delta)
+	if multiplayer_node.self_seeker:
+		execute_seeker()
+	set_data_multiplayer()
+
+
+##
+## Default godot function, get mouse position and set the camera to a rotation
+##
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and Input.get_mouse_mode() != Input.MOUSE_MODE_CAPTURED:
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+		pivot.rotate_x(-event.relative.y * mouse_sensitivity)
+		rotate_y(-event.relative.x * mouse_sensitivity)
+		pivot.rotation.x = clamp(pivot.rotation.x, -1.2, 1.2)
+
+
+##
+## Get Input, will be executed every frame. This is mostly utility things like capturing mouse and toggling fullscreen
+##
+func input() -> void:
 	if Input.is_action_just_pressed("toggle_mouse_capture"):
 		if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		else:
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	var input_dir = Vector3.ZERO
-	var smooving: bool = false
-	var strafin: int = 0
-	var reversed: bool = false
+
+
+##
+## Apply movement vectors and do some velocity calculations
+##
+func movement(delta: float) -> void:
+	if is_on_floor():
+		acceleration = ground_acceleration
+	else:
+		acceleration = air_acceleration
+	var input_dir = get_movement_input()
+	var new_velocity: Vector3 = input_dir*cur_max_speed
+	
+	var temp_velocity: Vector3 = velocity.linear_interpolate(new_velocity, acceleration*delta)
+	
+	velocity.x = temp_velocity.x
+	velocity.z = temp_velocity.z
+	velocity = move_and_slide(velocity, Vector3.UP, true)
+
+##
+## Get movement and set animation accordingly
+##
+func get_animation_state() -> void:
+	var anim_dir: Vector2 = Vector2.ZERO
+	var cur_animation = 0
+	var cur_animation_reversed = false
+	
+	anim_dir.x = int(Input.is_action_pressed("strafe_right"))-int(Input.is_action_pressed("strafe_left"))
+	anim_dir.y = int(Input.is_action_pressed("move_forward"))-int(Input.is_action_pressed("move_backward"))
+
+	if anim_dir.y != 0:
+		cur_animation = Animations.Walk
+		if anim_dir.y < 0:
+			cur_animation_reversed = true
+	if anim_dir.x > 0:
+		cur_animation = Animations.StrafeRight
+	elif anim_dir.x < 0:
+		cur_animation = Animations.StrafeLeft
+	
+	if Input.is_action_pressed("sprint") && cur_animation != 0:
+		cur_animation += 1
+	
+	cur_anim = cur_animation
+	cur_anim_reversed = cur_animation_reversed
+
+##
+## get movement vector from input.
+##
+func get_movement_input() -> Vector3:
+	var input_dir: Vector3 = Vector3.ZERO
 	if Input.is_action_pressed("move_forward"):
 		input_dir += -camera.global_transform.basis.z
-		smooving = true
 	if Input.is_action_pressed("move_backward"):
 		input_dir += camera.global_transform.basis.z
-		smooving = true
-		reversed = true
 	if Input.is_action_pressed("strafe_left"):
 		input_dir += -camera.global_transform.basis.x
-		strafin = -1
 	if Input.is_action_pressed("strafe_right"):
 		input_dir += camera.global_transform.basis.x
-		strafin = 1
-		reversed = true
-	input_dir = input_dir.normalized()
-	
-	if strafin != 0:
-		if strafin == -1:
-			animationBlendValue = ANIMATION_STRAFE_LEFT
-		elif strafin == 1:
-			animationBlendValue = ANIMATION_STRAFE_RIGHT
-			
-		if Input.is_action_pressed("sprint"):
-			if strafin == -1:
-				animationBlendValue = ANIMATION_STRAFE_RUN_LEFT
-			elif strafin == 1:
-				animationBlendValue = ANIMATION_STRAFE_RUN_RIGHT
-	elif smooving:
-		animationBlendValue = ANIMATION_WALK
-		if Input.is_action_pressed("sprint"):
-			animationBlendValue = ANIMATION_RUN
-	else:
-		animationBlendValue = ANIMATION_IDLE
-	
-	get_node("/root/Multiplayer").anim = animationBlendValue
-	get_node("/root/Multiplayer").anim_reversed = reversed
 	
 	if Input.is_action_pressed("sprint"):
 		cur_max_speed = max_sprint_speed
 	else:
 		cur_max_speed = max_speed
+	
+	input_dir = input_dir.normalized()
+	
 	return input_dir
-	
-func _unhandled_input(event):
-	if event is InputEventMouseButton and Input.get_mouse_mode() != Input.MOUSE_MODE_CAPTURED:
-		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
-		rotation_helper.rotate_x(-event.relative.y * mouse_sensitivity)
-		rotate_y(-event.relative.x * mouse_sensitivity)
-		rotation_helper.rotation.x = clamp(rotation_helper.rotation.x, -1.2, 1.2)
 
-func _physics_process(delta):
-	velocity.y += gravity * delta
-	var desired_velocity = get_input() * cur_max_speed
-	if Input.is_action_just_pressed("jump") and ground_ray.is_colliding():
+
+##
+## Add gravity to velocity and reverse velocity if the player jumps
+##
+func execute_gravity_and_jump(delta: float):
+	if is_on_floor():
+		air_time = 0.0
+	else:
+		air_time += delta
+	velocity.y += (gravity + gravity*air_time*air_time_multiplier) * delta
+	if Input.is_action_pressed("jump") and is_on_floor():
 		velocity.y = jump_speed
+
+
+##
+## Set the data in the multiplayer_node global node.
+##
+func set_data_multiplayer():
+	## Position Variables
+	multiplayer_node.pos = global_transform.origin
+	multiplayer_node.rot = rotation_degrees
+	multiplayer_node.vel = velocity
 	
-	velocity.x = desired_velocity.x
-	velocity.z = desired_velocity.z
-	velocity = move_and_slide(velocity, Vector3.UP, true)
-	get_node("/root/Multiplayer").pos = global_transform.origin
-	get_node("/root/Multiplayer").rot = rotation_degrees
-	get_node("/root/Multiplayer").vel = velocity
-	
-	if get_node("/root/Multiplayer").self_seeker:
-		var colliding_object = $RotationHelper/Camera/CameraRay.get_collider()
-		if colliding_object:
-			if colliding_object.is_in_group("Player"):
-				crosshairText1.hide()
-				crosshairText2.show()
-				if Input.is_action_just_pressed("find"):
-					print("found: "+colliding_object.id)
-					get_node("/root/Multiplayer").send_player_found(colliding_object.id)
-			else:
-				crosshairText1.show()
-				crosshairText2.hide()
+	## Animation Variables
+	multiplayer_node.anim = cur_anim
+	multiplayer_node.anim_reversed = cur_anim_reversed
+
+
+##
+## Only execute when someone is seekr will get the raycast from the camera and will check if it is colliding, if it is change crosshair icons
+##
+func execute_seeker():
+	var colliding_object = camera_raycast.get_collider()
+	if colliding_object:
+		if colliding_object.is_in_group("Player"):
+			crosshair1.hide()
+			crosshair2.show()
+			if Input.is_action_just_pressed("find"):
+				multiplayer_node.send_player_found(colliding_object.id)
 		else:
-			crosshairText1.show()
-			crosshairText2.hide()
+			crosshair1.show()
+			crosshair2.hide()
+	else:
+		crosshair1.show()
+		crosshair2.hide()

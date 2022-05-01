@@ -1,37 +1,60 @@
 extends Node
 
-signal lobby_new_player(players, data)
-signal change_to_game
-signal back_to_lobby
+##
+## Signals for signalling to other scripts that certain things happened
+##
+signal lobby_new_player(players, data) # will send this when a lobby message has been received.
+signal change_to_game # Will emit when the server signifies that we are going to the game
+signal back_to_lobby # Will emit when game is over and we need to go back to lobby
 
 signal death # will emit when someone was found
 signal spectate # will emit when u are found
 
-#default websocket_url
+
+##
+## It sets a default websocket_url that could be used if the main menu allowed for it
+##
 export var websocket_url = "ws://localhost:8888/ws"
 var default_url = ""
 
-#WebsocketClients and if it is connected so you can check before sending any data
-var _client = WebSocketClient.new()
-var isClientConnected: bool = false
-#Timer for sending data 30 times a second see _ready() for connecting and setting data
-var dataSendTimer: Timer = Timer.new()
 
-#player data, will get inserted via the Player.gd
+##
+## WebsocketClients and if it is connected, and if it is connected
+##
+var _client = WebSocketClient.new()
+var is_client_connected: bool = false
+
+##
+## Timer for sending data 30 times a second see _ready() for connecting and setting data
+##
+var data_send_timer: Timer = Timer.new()
+
+
+##
+## Player data, will get inserted via the Player.gd
+##
 var pos = Vector3.ZERO
 var rot = Vector3.ZERO
 var vel = Vector3.ZERO
 var anim: int = 0
 var anim_reversed: bool = false
 
-#Basic data only username will be changed via a different script
+
+##
+## Basic data used in requesting and setting data server side, id will be got from th server
+##
 var username: String = ""
 var id: String = ""
 
-#LobbyData is the player ready or not.
+##
+## isReady For lobby to see
+##
 var isReady: bool = false
 
-#Data for moving players around.
+
+##
+## Data for moving players around.
+##
 var players: Array
 var playerNames: Dictionary
 var spawned_players: Array
@@ -59,8 +82,8 @@ var map_used = 0
 func reset():
 	isReady = false
 	seeker = ""
-	dataSendTimer.queue_free()
-	dataSendTimer = Timer.new()
+	data_send_timer.queue_free()
+	data_send_timer = Timer.new()
 	for i in instance_players.keys():
 		instance_players[i].queue_free()
 	instance_players.clear()
@@ -92,7 +115,7 @@ func start_connection(url: String = ""):
 		print("Unable to connect")
 		set_process(false)
 	else:
-		isClientConnected = true
+		is_client_connected = true
 		set_process(true)
 
 func stop_connection():
@@ -102,7 +125,7 @@ func _closed(was_clean = false):
 	# was_clean will tell you if the disconnection was correctly notified
 	# by the remote peer before closing the socket.
 	print("Closed, clean: ", was_clean)
-	isClientConnected = false
+	is_client_connected = false
 	set_process(false)
 
 func _connected(_proto = ""):
@@ -220,12 +243,12 @@ func send_player_found(id):
 	_client.get_peer(1).put_packet(("5"+JSON.print(data)).to_utf8())
 
 func create_data_timer():
-	dataSendTimer.wait_time = 1.0/30
-	dataSendTimer.autostart = true
-	dataSendTimer.one_shot = false
-	dataSendTimer.connect("timeout", self, "send_velocityData")
-	self.add_child(dataSendTimer)
-	return dataSendTimer
+	data_send_timer.wait_time = 1.0/30
+	data_send_timer.autostart = true
+	data_send_timer.one_shot = false
+	data_send_timer.connect("timeout", self, "send_velocityData")
+	self.add_child(data_send_timer)
+	return data_send_timer
 
 func create_game_timer():
 	var timer: Timer = Timer.new()

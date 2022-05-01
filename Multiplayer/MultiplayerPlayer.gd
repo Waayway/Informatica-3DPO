@@ -11,6 +11,30 @@ var vel = Vector3.ZERO
 
 var isSeeker = false
 
+enum Animations {
+	Idle = 0,
+	Walk = 1,
+	Run = 2,
+	StrafeLeft = 3,
+	StrafeRunLeft = 4,
+	StrafeRight = 5,
+	StrafeRunRight = 6,
+}
+const AnimationNames = {
+	Idle = "IdleAnimation",
+	Walk = "WalkingAnimation",
+	Run = "RunningAnimation",
+	StrafeLeft = "StrafeLeftAnimation",
+	StrafeRunLeft = "StrafeLeftRunAnimation",
+	StrafeRight = "StrafeRightAnimation",
+	StrafeRunRight = "StrafeRightRunAnimation",
+}
+
+enum Sounds {
+	Walking = 0,
+}
+onready var WalkingOrRunningSound = $Audio/Walk
+
 func _ready():
 	get_node("Spatial/Viewport/Label").text = username
 	anim.play("IdleAnimation")
@@ -31,22 +55,29 @@ func _play_animation(animation: String, reversed: bool):
 		anim.play_backwards(animation)
 	else:
 		anim.play(animation)
-	
+
+func _play_sound_by_animation(sound_num: int):
+	if sound_num == Sounds.Walking && !WalkingOrRunningSound.playing:
+		WalkingOrRunningSound.play()
+
 func _set_animation(animation: int, reversed: bool):
-	if animation == 0 and anim.current_animation != "IdleAnimation":
-		_play_animation("IdleAnimation", reversed)
-	elif animation == 1 and anim.current_animation != "WalkingAnimation":
-		_play_animation("WalkingAnimation", reversed)
-	elif animation == 2 and anim.current_animation != "RunningAnimation":
-		_play_animation("RunningAnimation", reversed)
-	elif animation == 3 and anim.current_animation != "StrafeLeftAnimation":
-		_play_animation("StrafeLeftAnimation", reversed)
-	elif animation == 4 and anim.current_animation != "StrafeLeftRunAnimation":
-		_play_animation("StrafeLeftRunAnimation", reversed)
-	elif animation == 5 and anim.current_animation != "StrafeRightAnimation":
-		_play_animation("StrafeRightAnimation", reversed)
-	elif animation == 6 and anim.current_animation != "StrafeRightRunAnimation":
-		_play_animation("StrafeRightRunAnimation", reversed)
+	if animation == Animations.Idle and anim.current_animation != AnimationNames.Idle:
+		_play_animation(AnimationNames.Idle, reversed)
+	elif animation == Animations.Walk and anim.current_animation != AnimationNames.Walk:
+		_play_animation(AnimationNames.Walk, reversed)
+	elif animation == Animations.Run and anim.current_animation != AnimationNames.Run:
+		_play_animation(AnimationNames.Run, reversed)
+	elif animation == Animations.StrafeLeft and anim.current_animation != AnimationNames.StrafeLeft:
+		_play_animation(AnimationNames.StrafeLeft, reversed)
+	elif animation == Animations.StrafeRunLeft and anim.current_animation != AnimationNames.StrafeRunLeft:
+		_play_animation(AnimationNames.StrafeRunLeft, reversed)
+	elif animation == Animations.StrafeRight and anim.current_animation != AnimationNames.StrafeRight:
+		_play_animation(AnimationNames.StrafeRight, reversed)
+	elif animation == Animations.StrafeRunRight and anim.current_animation != AnimationNames.StrafeRunRight:
+		_play_animation(AnimationNames.StrafeRunRight, reversed)
+	
+	if animation != Animations.Idle:
+		_play_sound_by_animation(Sounds.Walking)
 
 func apply_data(data: Dictionary):
 	var local_pos = data["pos"]
