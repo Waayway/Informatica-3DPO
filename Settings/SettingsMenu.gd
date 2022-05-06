@@ -2,8 +2,6 @@ extends Control
 
 signal exit_settings
 
-onready var settings = get_node("/root/Settings")
-
 ## Utilities
 onready var fullscreenToggle = $Container/Utilities/Fullscreen/FullscreenToggle
 
@@ -32,27 +30,27 @@ onready var SoundfxSlider = $Container/Sound/SoundfxHbox/SoundfxSlider
 onready var SliderSoundFX = $Audio/SliderSoundChange
 
 func _ready():
-	fullscreenToggle.pressed = settings.fullscreen
-	FpsLimitSlider.value = settings.fps_limit
-	_on_FpsLimitSlider_value_changed(settings.fps_limit)
-	VsyncToggle.pressed = settings.vsync
-	if settings.resolution == settings.Resolution.RES_540:
+	fullscreenToggle.pressed = Settings.fullscreen
+	FpsLimitSlider.value = Settings.fps_limit
+	_on_FpsLimitSlider_value_changed(Settings.fps_limit)
+	VsyncToggle.pressed = Settings.vsync
+	if Settings.resolution == Settings.Resolution.RES_540:
 		Resolution540P.pressed = true
-	elif settings.resolution == settings.Resolution.RES_720:
+	elif Settings.resolution == Settings.Resolution.RES_720:
 		Resolution720P.pressed = true
-	elif settings.resolution == settings.Resolution.RES_1080:
+	elif Settings.resolution == Settings.Resolution.RES_1080:
 		Resolution1080P.pressed = true
-	elif settings.resolution == settings.Resolution.RES_1440:
+	elif Settings.resolution == Settings.Resolution.RES_1440:
 		Resolution1440P.pressed = true
-	elif settings.resolution == settings.Resolution.RES_4k:
+	elif Settings.resolution == Settings.Resolution.RES_4k:
 		Resolution4K.pressed = true
-	elif settings.resolution == settings.Resolution.NATIVE:
+	elif Settings.resolution == Settings.Resolution.NATIVE:
 		ResolutionNative.pressed = true
 	
 	## Sound
-	MasterAudioSlider.value = settings.master_audio
-	MusicAudioSlider.value = settings.music
-	SoundfxSlider.value = settings.sound_effects
+	MasterAudioSlider.value = Settings.master_audio
+	MusicAudioSlider.value = Settings.music
+	SoundfxSlider.value = Settings.sound_effects
 
 func _on_Settings_visibility_changed():
 	_ready()
@@ -60,58 +58,58 @@ func _on_Settings_visibility_changed():
 func _on_ExitButton_pressed():
 	self.hide()
 	emit_signal("exit_settings")
-	settings.save_settings()
+	Settings.save_settings()
 
 func _on_ApplyButton_pressed():
 	var res_button_pressed = $Container/Performance/Resolution/Native.group.get_pressed_button().text
 	if res_button_pressed == "540P":
-		settings.resolution = settings.Resolution.RES_540
+		Settings.resolution = Settings.Resolution.RES_540
 	elif res_button_pressed == "720P":
-		settings.resolution = settings.Resolution.RES_720
+		Settings.resolution = Settings.Resolution.RES_720
 	elif res_button_pressed == "1080P":
-		settings.resolution = settings.Resolution.RES_1080
+		Settings.resolution = Settings.Resolution.RES_1080
 	elif res_button_pressed == "1440P":
-		settings.resolution = settings.Resolution.RES_1440
+		Settings.resolution = Settings.Resolution.RES_1440
 	elif res_button_pressed == "4K":
-		settings.resolution = settings.Resolution.RES_4k
+		Settings.resolution = Settings.Resolution.RES_4k
 	elif res_button_pressed == "Native":
-		settings.resolution = settings.Resolution.NATIVE
-	settings.apply_settings()
+		Settings.resolution = Settings.Resolution.NATIVE
+	Settings.apply_settings()
 
 func _on_FullscreenToggle_toggled(button_pressed):
 	OS.window_fullscreen = button_pressed
-	settings.fullscreen = button_pressed
+	Settings.fullscreen = button_pressed
 
 func _on_VsyncToggle_toggled(button_pressed):
-	settings.vsync = button_pressed
+	Settings.vsync = button_pressed
 
 func _on_FpsLimitSlider_value_changed(value):
 	var textToAdd = str(value)
 	if value == 0:
 		textToAdd = "Display Limit"
 	FpsLimitLabel.text = "Fps Limit: "+ textToAdd
-	settings.fps_limit = value
+	Settings.fps_limit = value
 
 func set_text_on_value(node: Label, value):
 	node.text = (str(value)+"%") if value != -1 else "Muted"
 
 func _on_MasterAudioSlider_value_changed(value):
 	set_text_on_value($Container/Sound/MasterAudioHBox/PercentageNumberLabel,value)
-	settings.master_audio = value
-	settings.apply_sound_settings()
+	Settings.master_audio = value
+	Settings.apply_sound_settings()
 	if !SliderSoundFX.playing:
 		SliderSoundFX.play()
 
 func _on_MusicAudioSlider_value_changed(value):
 	set_text_on_value($Container/Sound/MusicAudioHbox/PercentageNumberLabel,value)
-	settings.music = value
-	settings.apply_sound_settings()
+	Settings.music = value
+	Settings.apply_sound_settings()
 	if !SliderSoundFX.playing:
 		SliderSoundFX.play()
 	
 func _on_SoundfxSlider_value_changed(value):
 	set_text_on_value($Container/Sound/SoundfxHbox/PercentageNumberLabel,value)
-	settings.sound_effects = value
-	settings.apply_sound_settings()
+	Settings.sound_effects = value
+	Settings.apply_sound_settings()
 	if !SliderSoundFX.playing:
 		SliderSoundFX.play()

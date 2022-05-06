@@ -6,12 +6,10 @@ var loadedPlayerInstances: Array = []
 
 var PodiumPlayerWidth = 1.8
 
-onready var MultiplayerNode = get_node("/root/Multiplayer")
-
 func _ready():
-	MultiplayerNode.send_lobby_message()
-	MultiplayerNode.connect("lobby_new_player", self,"lobby_new_players")
-	MultiplayerNode.connect("change_to_game", self, "change_to_game")
+	Multiplayer.send_lobby_message()
+	Multiplayer.connect("lobby_new_player", self,"lobby_new_players")
+	Multiplayer.connect("change_to_game", self, "change_to_game")
 	$Timer.connect("timeout",self,"on_timer_timeout")
 
 func _process(delta):
@@ -45,17 +43,17 @@ func lobby_new_players(players: Array, fullDict: Dictionary):
 	for i in loadedPlayers:
 		if fullDict["players"][i].keys().has("name") and loadedPlayers.find(i) != -1:
 			if fullDict["players"][i]["name"].empty():
-#				MultiplayerNode.send_lobby_message()
+#				Multiplayer.send_lobby_message()
 				break
 			loadedPlayerInstances[loadedPlayers.find(i)].get_child(0).change_name_above_head(fullDict["players"][i]["name"])
 	
 
 func _on_Button_toggled(button_pressed):
-	MultiplayerNode.isReady = button_pressed
-	MultiplayerNode.send_lobby_message()
+	Multiplayer.isReady = button_pressed
+	Multiplayer.send_lobby_message()
 
 func on_timer_timeout():
-	MultiplayerNode.send_timer_timeout()
+	Multiplayer.send_timer_timeout()
 
 func change_to_game():
 	get_tree().change_scene("res://Game/MainScene.tscn")

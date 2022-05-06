@@ -1,11 +1,6 @@
 extends KinematicBody
 
 
-##
-## Load the MultiplayerNode so it is easier to access from this script
-##
-onready var multiplayer_node = get_node("/root/Multiplayer")
-
 
 ##
 ## Load all camera related Nodes, so the camera and pivot, which are both needed
@@ -54,6 +49,8 @@ enum Animations {
 	StrafeRunLeft = 4,
 	StrafeRight = 5,
 	StrafeRunRight = 6,
+	JumpUp = 7,
+	FallingIdle = 8,
 }
 
 ##
@@ -62,7 +59,7 @@ enum Animations {
 ##
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	if multiplayer_node.self_seeker:
+	if Multiplayer.self_seeker:
 		seeker_ui.show()
 		seeker_ui.position = get_viewport().size/2
 
@@ -75,7 +72,7 @@ func _physics_process(delta: float) -> void:
 	execute_gravity_and_jump(delta)
 	get_animation_state()
 	movement(delta)
-	if multiplayer_node.self_seeker:
+	if Multiplayer.self_seeker:
 		execute_seeker()
 	set_data_multiplayer()
 
@@ -130,15 +127,17 @@ func get_animation_state() -> void:
 	
 	anim_dir.x = int(Input.is_action_pressed("strafe_right"))-int(Input.is_action_pressed("strafe_left"))
 	anim_dir.y = int(Input.is_action_pressed("move_forward"))-int(Input.is_action_pressed("move_backward"))
-
-	if anim_dir.y != 0:
-		cur_animation = Animations.Walk
-		if anim_dir.y < 0:
-			cur_animation_reversed = true
-	if anim_dir.x > 0:
-		cur_animation = Animations.StrafeRight
-	elif anim_dir.x < 0:
-		cur_animation = Animations.StrafeLeft
+	if is_on_floor():
+		if anim_dir.y != 0:
+			cur_animation = Animations.Walk
+			if anim_dir.y < 0:
+				cur_animation_reversed = true
+		if anim_dir.x > 0:
+			cur_animation = Animations.StrafeRight
+		elif anim_dir.x < 0:
+			cur_animation = Animations.StrafeLeft
+	else:
+		cur_animation = Animations.FallingIdle
 	
 	if Input.is_action_pressed("sprint") && cur_animation != 0:
 		cur_animation += 1
@@ -184,17 +183,17 @@ func execute_gravity_and_jump(delta: float):
 
 
 ##
-## Set the data in the multiplayer_node global node.
+## Set the data in the Multiplayer global node.
 ##
 func set_data_multiplayer():
 	## Position Variables
-	multiplayer_node.pos = global_transform.origin
-	multiplayer_node.rot = rotation_degrees
-	multiplayer_node.vel = velocity
+	Multiplayer.pos = global_transform.origin
+	Multiplayer.rot = rotation_degrees
+	Multiplayer.vel = velocity
 	
 	## Animation Variables
-	multiplayer_node.anim = cur_anim
-	multiplayer_node.anim_reversed = cur_anim_reversed
+	Multiplayer.anim = cur_anim
+	Multiplayer.anim_reversed = cur_anim_reversed
 
 
 ##
@@ -207,7 +206,7 @@ func execute_seeker():
 			crosshair1.hide()
 			crosshair2.show()
 			if Input.is_action_just_pressed("find"):
-				multiplayer_node.send_player_found(colliding_object.id)
+				Multiplayer.send_player_found(colliding_object.id)
 		else:
 			crosshair1.show()
 			crosshair2.hide()

@@ -50,7 +50,6 @@ func apply_settings():
 
 func apply_sound_settings():
 	var onethird: float = 10.0/3.0
-	print(master_audio)
 	var cur_master_audio = (master_audio/onethird)-24 if master_audio != -1 else -80
 	var cur_sound_effects = (sound_effects/onethird)-24 if sound_effects != -1 else -80
 	var cur_music = (music/onethird)-24 if music != -1 else -80

@@ -1,7 +1,5 @@
 extends Spatial
 
-onready var MultiplayerNode = get_node("/root/Multiplayer")
-
 var TIMERLABELFORMAT = "%02d:%02d"
 
 var gameTimer: Timer
@@ -10,27 +8,26 @@ var dataTimer: Timer
 var map: Spatial
 
 func _ready():
-	if MultiplayerNode.map_used == 0:
+	if Multiplayer.map_used == 0:
 		var mapResource = load("res://Game/Map.tscn")
 		map = mapResource.instance()
 		add_child(map)
-	elif MultiplayerNode.map_used == 1:
+	elif Multiplayer.map_used == 1:
 		var mapResource = load("res://Game/Map1.tscn")
 		map = mapResource.instance()
 		add_child(map)
-	MultiplayerNode.send_lobbyloaded_message()
-	dataTimer = MultiplayerNode.create_data_timer()
-	gameTimer = MultiplayerNode.create_game_timer()
-	print(gameTimer)
-	MultiplayerNode.connect("back_to_lobby",self,"_back_to_lobby")
-	MultiplayerNode.connect("spectate", self,"spectate")
+	Multiplayer.send_lobbyloaded_message()
+	dataTimer = Multiplayer.create_data_timer()
+	gameTimer = Multiplayer.create_game_timer()
+	Multiplayer.connect("back_to_lobby",self,"_back_to_lobby")
+	Multiplayer.connect("spectate", self,"spectate")
 	$Control/ColorRect/Timer.connect("timeout",self,"animation_finished")
-	if MultiplayerNode.id == MultiplayerNode.seeker:
+	if Multiplayer.id == Multiplayer.seeker:
 		$Control/SeekerLabel.text = "You are the Seeker"
 		$Control/BlackScreen.show()
 		$Player.translation = map.get_node("SeekerSpawn").translation
 	else:
-		$Control/SeekerLabel.text = MultiplayerNode.playerNames[MultiplayerNode.seeker]+" is the Seeker"
+		$Control/SeekerLabel.text = Multiplayer.playerNames[Multiplayer.seeker]+" is the Seeker"
 		var possibleSpawnPos = map.get_node("PossibleSpawnPositions").get_children()
 		$Player.translation = possibleSpawnPos[randi()%possibleSpawnPos.size()].translation
 	$Control/ColorRect/AnimationPlayer.play("SeekerlabelFade")

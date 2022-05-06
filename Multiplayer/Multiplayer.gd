@@ -181,7 +181,6 @@ func process_vel_data(data: Dictionary):
 		instance.username = playerNames[i]
 		if instance.id == seeker:
 			instance.isSeeker = true
-			print(instance.isSeeker)
 		self.add_child(instance)
 		instance_players[i] = instance
 		spawned_players.append(i)

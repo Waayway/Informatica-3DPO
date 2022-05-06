@@ -19,6 +19,8 @@ enum Animations {
 	StrafeRunLeft = 4,
 	StrafeRight = 5,
 	StrafeRunRight = 6,
+	JumpUp = 7,
+	FallingIdle = 8,
 }
 const AnimationNames = {
 	Idle = "IdleAnimation",
@@ -28,6 +30,8 @@ const AnimationNames = {
 	StrafeRunLeft = "StrafeLeftRunAnimation",
 	StrafeRight = "StrafeRightAnimation",
 	StrafeRunRight = "StrafeRightRunAnimation",
+	JumpUp = "JumpUpAnimation",
+	FallingIdle = "FallingIdle"
 }
 
 enum Sounds {

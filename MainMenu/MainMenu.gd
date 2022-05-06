@@ -5,6 +5,7 @@ onready var IPInput: LineEdit = $Control/VBoxContainer/Ip
 
 var IPRegex = RegEx.new()
 var HostnameRegex = RegEx.new()
+
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	var anim = get_node("AnimationPlayer")
@@ -21,9 +22,9 @@ func _on_Button_pressed():
 		
 	var IPtext = IPInput.text
 	if (IPRegex.search(IPtext) or HostnameRegex.search(IPtext)) and not UsernameInput.text.empty():
-		get_node("/root/Multiplayer").username = UsernameInput.text
-		get_node("/root/Multiplayer").map_used = map_button_pressed
-		get_node("/root/Multiplayer").start_connection("ws://"+IPtext+":8888/ws")
+		Multiplayer.username = UsernameInput.text
+		Multiplayer.map_used = map_button_pressed
+		Multiplayer.start_connection("ws://"+IPtext+":8888/ws")
 		get_tree().change_scene("res://Lobby/Lobby.tscn")
 
 func _on_Options_pressed():
