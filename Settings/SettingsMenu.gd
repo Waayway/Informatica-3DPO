@@ -3,49 +3,49 @@ extends Control
 signal exit_settings
 
 ## Utilities
-onready var fullscreenToggle = $Container/Utilities/Fullscreen/FullscreenToggle
+@onready var fullscreenToggle: Button = $Container/Utilities/Fullscreen/FullscreenToggle
 
 ## FPS Lock
-onready var FpsLimitLabel = $Container/Performance/FpsLimitLabel
-onready var FpsLimitSlider = $Container/Performance/FpsLimit/FpsLimitSlider
+@onready var FpsLimitLabel = $Container/Performance/FpsLimitLabel
+@onready var FpsLimitSlider = $Container/Performance/FpsLimit/FpsLimitSlider
 
 ## Vsync
-onready var VsyncToggle = $Container/Performance/Vsync/VsyncToggle
+@onready var VsyncToggle = $Container/Performance/Vsync/VsyncToggle
 
 ## Resolution
-onready var Resolution540P = $"Container/Performance/Resolution/540P"
-onready var Resolution720P = $"Container/Performance/Resolution/720P"
-onready var Resolution1080P = $"Container/Performance/Resolution/1080P"
-onready var Resolution1440P = $"Container/Performance/Resolution/1440P"
-onready var Resolution4K = $"Container/Performance/Resolution/4K"
-onready var ResolutionNative = $"Container/Performance/Resolution/Native"
+@onready var Resolution540P = $"Container/Performance/Resolution/540P"
+@onready var Resolution720P = $"Container/Performance/Resolution/720P"
+@onready var Resolution1080P = $"Container/Performance/Resolution/1080P"
+@onready var Resolution1440P = $"Container/Performance/Resolution/1440P"
+@onready var Resolution4K = $"Container/Performance/Resolution/4K"
+@onready var ResolutionNative = $"Container/Performance/Resolution/Native"
 
 
 ## Sound
-onready var MasterAudioSlider = $Container/Sound/MasterAudioHBox/MasterAudioSlider
-onready var MusicAudioSlider = $Container/Sound/MusicAudioHbox/MusicAudioSlider
-onready var SoundfxSlider = $Container/Sound/SoundfxHbox/SoundfxSlider
+@onready var MasterAudioSlider = $Container/Sound/MasterAudioHBox/MasterAudioSlider
+@onready var MusicAudioSlider = $Container/Sound/MusicAudioHbox/MusicAudioSlider
+@onready var SoundfxSlider = $Container/Sound/SoundfxHbox/SoundfxSlider
 
 ## SoundFX
-onready var SliderSoundFX = $Audio/SliderSoundChange
+@onready var SliderSoundFX = $Audio/SliderSoundChange
 
 func _ready():
-	fullscreenToggle.pressed = Settings.fullscreen
+	fullscreenToggle.button_pressed = Settings.fullscreen
 	FpsLimitSlider.value = Settings.fps_limit
 	_on_FpsLimitSlider_value_changed(Settings.fps_limit)
-	VsyncToggle.pressed = Settings.vsync
+	VsyncToggle.button_pressed = Settings.vsync
 	if Settings.resolution == Settings.Resolution.RES_540:
-		Resolution540P.pressed = true
+		Resolution540P.button_pressed = true
 	elif Settings.resolution == Settings.Resolution.RES_720:
-		Resolution720P.pressed = true
+		Resolution720P.button_pressed = true
 	elif Settings.resolution == Settings.Resolution.RES_1080:
-		Resolution1080P.pressed = true
+		Resolution1080P.button_pressed = true
 	elif Settings.resolution == Settings.Resolution.RES_1440:
-		Resolution1440P.pressed = true
+		Resolution1440P.button_pressed = true
 	elif Settings.resolution == Settings.Resolution.RES_4k:
-		Resolution4K.pressed = true
+		Resolution4K.button_pressed = true
 	elif Settings.resolution == Settings.Resolution.NATIVE:
-		ResolutionNative.pressed = true
+		ResolutionNative.button_pressed = true
 	
 	## Sound
 	MasterAudioSlider.value = Settings.master_audio
@@ -77,7 +77,7 @@ func _on_ApplyButton_pressed():
 	Settings.apply_settings()
 
 func _on_FullscreenToggle_toggled(button_pressed):
-	OS.window_fullscreen = button_pressed
+	ProjectSettings.set("display/window/size/fullscreen", button_pressed)
 	Settings.fullscreen = button_pressed
 
 func _on_VsyncToggle_toggled(button_pressed):

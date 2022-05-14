@@ -31,8 +31,8 @@ func _ready():
 
 func _input(event):
 	if event.is_action_pressed("toggle_fullscreen"):
-		OS.window_fullscreen = !OS.window_fullscreen
-		fullscreen = OS.window_fullscreen
+		ProjectSettings.set("display/window/size/fullscreen", !ProjectSettings.get("display/window/size/fullscreen"))
+		fullscreen = ProjectSettings.get("display/window/size/fullscreen")
 		get_tree().set_input_as_handled()
 
 ##
@@ -40,7 +40,7 @@ func _input(event):
 ##
 func apply_settings():
 	## Utilities
-	OS.window_fullscreen = fullscreen
+	ProjectSettings.set("display/window/size/fullscreen", fullscreen)
 	
 	## Performance
 	Engine.target_fps = fps_limit

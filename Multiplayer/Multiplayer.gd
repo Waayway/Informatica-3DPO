@@ -14,7 +14,7 @@ signal spectate # will emit when u are found
 ##
 ## It sets a default websocket_url that could be used if the main menu allowed for it
 ##
-export var websocket_url = "ws://localhost:8888/ws"
+@export var websocket_url = "ws://localhost:8888/ws"
 var default_url = ""
 
 
@@ -70,7 +70,7 @@ var timerTotalTime: int = 0
 var firstMessage: bool = true
 
 # Thing for spawning multiplayer players.
-var MultiplayerPlayer = preload("res://Multiplayer/MultiplayerPlayer.tscn")
+var MultiplayerPlayer = load("res://Multiplayer/MultiplayerPlayer.tscn")
 
 var gameOverData = {}
 var seeker = ""
@@ -92,13 +92,13 @@ func reset():
 func _ready():
 	set_process(false)
 	# Connect base signals to get notified of connection open, close, and errors.
-	_client.connect("connection_closed", self, "_closed")
-	_client.connect("connection_error", self, "_closed")
-	_client.connect("connection_established", self, "_connected")
+	_client.connect("connection_closed", _closed)
+	_client.connect("connection_error", _closed)
+	_client.connect("connection_established", _connected)
 	# This signal is emitted when not using the Multiplayer API every time
 	# a full packet is received.
 	# Alternatively, you could check get_peer(1).get_available_packets() in a loop.
-	_client.connect("data_received", self, "_on_data")
+	_client.connect("data_received", _on_data)
 
 
 func start_connection(url: String = ""):
@@ -133,14 +133,17 @@ func _connected(_proto = ""):
 
 func _on_data():
 	var data = _client.get_peer(1).get_packet().get_string_from_utf8()
+	var json = JSON.new()
 	if firstMessage:
 		id = data
 		firstMessage = false
 		send_first_message()
 	elif data.begins_with("0"):
-		get_lobby_data(JSON.parse(data.substr(1)).result)
+		json.parse(data.substr(1))
+		get_lobby_data(json.get_data())
 	elif data.begins_with("2"):
-		var message = JSON.parse(data.substr(1)).result
+		json.parse(data.substr(1))
+		var message = json.get_data()
 		players_done_loading = message["playersdoneloading"]
 		players = message["players"]
 		playerNames = message["playerNames"]
@@ -151,13 +154,16 @@ func _on_data():
 		self_seeker = seeker == id
 		emit_signal("change_to_game")
 	elif data.begins_with("3"):
-		var message = JSON.parse(data.substr(1)).result
+		json.parse(data.substr(1))
+		var message = json.get_data()
 		players_done_loading = message["playersdoneloading"]
 	elif data.begins_with("4"):
-		var message = JSON.parse(data.substr(1)).result
+		json.parse(data.substr(1))
+		var message = json.get_data()
 		process_vel_data(message)
 	elif data.begins_with("5"):
-		var message = JSON.parse(data.substr(1)).result
+		json.parse(data.substr(1))
+		var message = json.get_data()
 		gameOverData = message
 		emit_signal("back_to_lobby")
 	elif data.begins_with("6"):
@@ -194,22 +200,24 @@ func get_lobby_data(data: Dictionary):
 	emit_signal("lobby_new_player", list, data)
 
 func send_lobby_message():
-	_client.get_peer(1).put_packet(('0{"'+id+'": '+str(isReady).to_lower()+'}').to_utf8())
+	_client.get_peer(1).put_packet(('0{"'+id+'": '+str(isReady).to_lower()+'}').to_utf8_buffer())
 
 func send_lobbyloaded_message():
-	_client.get_peer(1).put_packet(("2true").to_utf8())
+	_client.get_peer(1).put_packet(("2true").to_utf8_buffer())
 
 func send_timer_timeout():
-	_client.get_peer(1).put_packet("1timer".to_utf8())
+	_client.get_peer(1).put_packet("1timer".to_utf8_buffer())
 
 func send_first_message():
+	var json = JSON.new()
 	var data = {
 		"name": username,
 		"prefered_map": map_used
 	}
-	_client.get_peer(1).put_packet(JSON.print(data).to_utf8())
+	_client.get_peer(1).put_packet(json.stringify(data).to_utf8_buffer())
 
 func send_velocityData():
+	var json = JSON.new()
 	var data = {
 		"pos": {
 			"x": pos.x,
@@ -231,21 +239,22 @@ func send_velocityData():
 			"reversed": anim_reversed
 		},
 	}
-	_client.get_peer(1).put_packet(("4"+JSON.print(data)).to_utf8())
+	_client.get_peer(1).put_packet(("4"+json.stringify(data)).to_utf8_buffer())
 
 
 func _send_timer_timeout():
-	_client.get_peer(1).put_packet("1gametimer".to_utf8())
+	_client.get_peer(1).put_packet("1gametimer".to_utf8_buffer())
 
 func send_player_found(id):
+	var json = JSON.new()
 	var data = {"playerFound": id}
-	_client.get_peer(1).put_packet(("5"+JSON.print(data)).to_utf8())
+	_client.get_peer(1).put_packet(("5"+json.stringify(data)).to_utf8_buffer())
 
 func create_data_timer():
 	data_send_timer.wait_time = 1.0/30
 	data_send_timer.autostart = true
 	data_send_timer.one_shot = false
-	data_send_timer.connect("timeout", self, "send_velocityData")
+	data_send_timer.connect("timeout", send_velocityData)
 	self.add_child(data_send_timer)
 	return data_send_timer
 
@@ -254,7 +263,7 @@ func create_game_timer():
 	timer.wait_time = timerTotalTime-timerStartTime
 	timer.autostart = true
 	timer.one_shot = true
-	timer.connect("timeout",self,"_send_timer_timeout")
+	timer.connect("timeout", _send_timer_timeout)
 	self.add_child(timer)
 	return timer
 

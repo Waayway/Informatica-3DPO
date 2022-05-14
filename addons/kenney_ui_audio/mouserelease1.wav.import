@@ -2,12 +2,13 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/mouserelease1.wav-925ae13f439fe21624dc79f7c203d6eb.sample"
+uid="uid://j54yjtbmrju4"
+path="res://.godot/imported/mouserelease1.wav-925ae13f439fe21624dc79f7c203d6eb.sample"
 
 [deps]
 
 source_file="res://addons/kenney_ui_audio/mouserelease1.wav"
-dest_files=[ "res://.import/mouserelease1.wav-925ae13f439fe21624dc79f7c203d6eb.sample" ]
+dest_files=["res://.godot/imported/mouserelease1.wav-925ae13f439fe21624dc79f7c203d6eb.sample"]
 
 [params]
 
@@ -17,5 +18,7 @@ force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
 edit/normalize=false
-edit/loop=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
 compress/mode=0

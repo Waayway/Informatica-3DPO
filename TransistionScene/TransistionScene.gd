@@ -5,8 +5,8 @@ var gameOverData: Dictionary
 func _ready():
 	$AnimationPlayer.play_backwards("SceneTrans")
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	Multiplayer.reset()
-	gameOverData = Multiplayer.gameOverData
+	multiplayer.reset()
+	gameOverData = multiplayer.gameOverData
 	if not gameOverData["hiders"]:
 		$VBoxContainer/Label.text = "The Seeker won"
 

@@ -1,20 +1,13 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://shhtpfpce0r"]
 
-[ext_resource path="res://LoadingScreen/Loading.tres" type="Theme" id=1]
-[ext_resource path="res://LoadingScreen/Loading.gd" type="Script" id=2]
-
-[sub_resource type="DynamicFontData" id=1]
-font_path = "res://data/fonts/Ubuntu-Medium.ttf"
-
-[sub_resource type="DynamicFont" id=2]
-size = 50
-font_data = SubResource( 1 )
+[ext_resource type="Theme" uid="uid://cnfg2sca3pejl" path="res://MainMenu/MainMenu.tres" id="1_hwx8l"]
+[ext_resource type="Script" path="res://LoadingScreen/Loading.gd" id="2"]
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource( 1 )
-script = ExtResource( 2 )
+theme = ExtResource( "1_hwx8l" )
+script = ExtResource( "2" )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -22,42 +15,29 @@ __meta__ = {
 [node name="Panel" type="Panel" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 alignment = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Label" type="Label" parent="VBoxContainer"]
-margin_top = 176.0
-margin_right = 1024.0
-margin_bottom = 401.0
+offset_top = 275.0
+offset_right = 1024.0
+offset_bottom = 297.0
 text = "Loading..."
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
+horizontal_alignment = 1
 
 [node name="ProgressBar" type="ProgressBar" parent="VBoxContainer"]
-margin_top = 405.0
-margin_right = 1024.0
-margin_bottom = 424.0
+offset_top = 301.0
+offset_right = 1024.0
+offset_bottom = 324.0
 value = 10.0
 rounded = true
 
 [node name="ErrorLabel" type="Label" parent="VBoxContainer"]
 visible = false
-margin_top = 397.0
-margin_right = 1024.0
-margin_bottom = 454.0
-custom_colors/font_color = Color( 0.870588, 0, 0, 1 )
-custom_fonts/font = SubResource( 2 )
+offset_top = 315.0
+offset_right = 1024.0
+offset_bottom = 337.0
 text = "Error"
-align = 1

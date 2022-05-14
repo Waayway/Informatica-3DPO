@@ -2,12 +2,13 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/switch6.wav-a4b59034392332eb5302bd3735556355.sample"
+uid="uid://d13j3m0lqrg7x"
+path="res://.godot/imported/switch6.wav-a4b59034392332eb5302bd3735556355.sample"
 
 [deps]
 
 source_file="res://addons/kenney_ui_audio/switch6.wav"
-dest_files=[ "res://.import/switch6.wav-a4b59034392332eb5302bd3735556355.sample" ]
+dest_files=["res://.godot/imported/switch6.wav-a4b59034392332eb5302bd3735556355.sample"]
 
 [params]
 
@@ -17,5 +18,7 @@ force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
 edit/normalize=false
-edit/loop=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
 compress/mode=0

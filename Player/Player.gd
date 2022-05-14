@@ -1,38 +1,37 @@
-extends KinematicBody
+extends CharacterBody3D
 
 
 
 ##
 ## Load all camera related Nodes, so the camera and pivot, which are both needed
 ##
-onready var camera = $Pivot/Camera
-onready var pivot = $Pivot
-onready var camera_raycast = $Pivot/Camera/CameraRay
+@onready var camera = $Pivot/Camera
+@onready var pivot = $Pivot
+@onready var camera_raycast = $Pivot/Camera/CameraRay
 
 
 ##
 ## Seeker UI Elements, namely the 2 crosshairs. and the overarching node above it.
 ## You can show and hide both depending on situation, But Seeker
 ##
-onready var seeker_ui: Node2D = $SeekerUI
-onready var crosshair1: Sprite = $SeekerUI/Crosshair1
-onready var crosshair2: Sprite = $SeekerUI/Crosshair2
+@onready var seeker_ui: Node2D = $SeekerUI
+@onready var crosshair1: Sprite2D = $SeekerUI/Crosshair1
+@onready var crosshair2: Sprite2D = $SeekerUI/Crosshair2
 
 
 ##
 ## Movement Variables and constants.
 ##
-export var gravity: float = -20
-export var max_speed: float = 16
-export var max_sprint_speed: float = 20
-export var ground_acceleration: float = 10
-export var air_acceleration: float = 2
-export var air_time_multiplier: float = 0.2
+@export var gravity: float = -20
+@export var max_speed: float = 16
+@export var max_sprint_speed: float = 20
+@export var ground_acceleration: float = 10
+@export var air_acceleration: float = 2
+@export var air_time_multiplier: float = 0.2
 var cur_speed = 0
 var cur_max_speed = max_speed
 var jump_speed = 10
 var mouse_sensitivity = 0.002  # radians/pixel
-var velocity = Vector3.ZERO
 var acceleration: float = ground_acceleration
 var air_time: float = 0
 
@@ -59,7 +58,7 @@ enum Animations {
 ##
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	if Multiplayer.self_seeker:
+	if multiplayer.self_seeker:
 		seeker_ui.show()
 		seeker_ui.position = get_viewport().size/2
 
@@ -72,7 +71,7 @@ func _physics_process(delta: float) -> void:
 	execute_gravity_and_jump(delta)
 	get_animation_state()
 	movement(delta)
-	if Multiplayer.self_seeker:
+	if multiplayer.self_seeker:
 		execute_seeker()
 	set_data_multiplayer()
 
@@ -111,11 +110,11 @@ func movement(delta: float) -> void:
 	var input_dir = get_movement_input()
 	var new_velocity: Vector3 = input_dir*cur_max_speed
 	
-	var temp_velocity: Vector3 = velocity.linear_interpolate(new_velocity, acceleration*delta)
+	var temp_velocity: Vector3 = velocity.move_toward(new_velocity, acceleration*delta)
 	
 	velocity.x = temp_velocity.x
 	velocity.z = temp_velocity.z
-	velocity = move_and_slide(velocity, Vector3.UP, true)
+	move_and_slide()
 
 ##
 ## Get movement and set animation accordingly
@@ -187,13 +186,13 @@ func execute_gravity_and_jump(delta: float):
 ##
 func set_data_multiplayer():
 	## Position Variables
-	Multiplayer.pos = global_transform.origin
-	Multiplayer.rot = rotation_degrees
-	Multiplayer.vel = velocity
+	multiplayer.pos = global_transform.origin
+	multiplayer.rot = self.rotation
+	multiplayer.vel = velocity
 	
 	## Animation Variables
-	Multiplayer.anim = cur_anim
-	Multiplayer.anim_reversed = cur_anim_reversed
+	multiplayer.anim = cur_anim
+	multiplayer.anim_reversed = cur_anim_reversed
 
 
 ##
@@ -206,7 +205,7 @@ func execute_seeker():
 			crosshair1.hide()
 			crosshair2.show()
 			if Input.is_action_just_pressed("find"):
-				Multiplayer.send_player_found(colliding_object.id)
+				multiplayer.send_player_found(colliding_object.id)
 		else:
 			crosshair1.show()
 			crosshair2.hide()

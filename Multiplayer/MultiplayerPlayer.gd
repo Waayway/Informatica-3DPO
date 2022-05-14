@@ -1,10 +1,10 @@
-extends KinematicBody
+extends CharacterBody3D
 
-export var id: String = ""
-export var username: String = ""
+@export var id: String = ""
+@export var username: String = ""
 
-onready var anim: AnimationPlayer = $xbot/RootNode/AnimationPlayer
-onready var xbot: Spatial = $xbot
+@onready var anim: AnimationPlayer = $xbot/RootNode/AnimationPlayer
+@onready var xbot: Node3D = $xbot
 var pos = Vector3.ZERO
 var rot = Vector3.ZERO
 var vel = Vector3.ZERO
@@ -37,22 +37,23 @@ const AnimationNames = {
 enum Sounds {
 	Walking = 0,
 }
-onready var WalkingOrRunningSound = $Audio/Walk
+@onready var WalkingOrRunningSound = $Audio/Walk
 
 func _ready():
 	get_node("Spatial/Viewport/Label").text = username
 	anim.play("IdleAnimation")
 	if isSeeker:
 		var mat = get_node("xbot/RootNode/Beta_Joints").get_surface_material(0).duplicate()
-		mat.albedo_color = Color.purple
+		mat.albedo_color = Color.PURPLE
 		get_node("xbot/RootNode/Beta_Joints").set_surface_material(0,mat)
 	else:
 		var mat = get_node("xbot/RootNode/Beta_Joints").get_surface_material(0).duplicate()
-		mat.albedo_color = Color.aqua
+		mat.albedo_color = Color.AQUA
 		get_node("xbot/RootNode/Beta_Joints").set_surface_material(0,mat)
 
 func _process(delta):
-	move_and_slide(vel)
+	velocity = vel
+	move_and_slide()
 	
 func _play_animation(animation: String, reversed: bool):
 	if reversed:

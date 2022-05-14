@@ -2,12 +2,13 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/rollover1.wav-2290a57362715e9e23e123b2bbb2adba.sample"
+uid="uid://c5l2ccuco53kq"
+path="res://.godot/imported/rollover1.wav-2290a57362715e9e23e123b2bbb2adba.sample"
 
 [deps]
 
 source_file="res://addons/kenney_ui_audio/rollover1.wav"
-dest_files=[ "res://.import/rollover1.wav-2290a57362715e9e23e123b2bbb2adba.sample" ]
+dest_files=["res://.godot/imported/rollover1.wav-2290a57362715e9e23e123b2bbb2adba.sample"]
 
 [params]
 
@@ -17,5 +18,7 @@ force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
 edit/normalize=false
-edit/loop=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
 compress/mode=0

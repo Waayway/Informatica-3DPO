@@ -1,194 +1,195 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=10 format=3 uid="uid://oa7p4ljrxvec"]
 
-[ext_resource path="res://MainMenu/MainMenu.tres" type="Theme" id=2]
-[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=3]
-[ext_resource path="res://LoadingScreen/Loading.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Game/MainScene.gd" type="Script" id=5]
+[ext_resource type="Theme" uid="uid://cnfg2sca3pejl" path="res://MainMenu/MainMenu.tres" id="2"]
+[ext_resource type="PackedScene" uid="uid://bl1u1s227dwvd" path="res://Player/Player.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://LoadingScreen/Loading.tscn" id="4"]
+[ext_resource type="Script" path="res://Game/MainScene.gd" id="5"]
 
-[sub_resource type="DynamicFontData" id=1]
-font_path = "res://data/fonts/Ubuntu-Bold.ttf"
-
-[sub_resource type="DynamicFont" id=2]
-size = 48
-font_data = SubResource( 1 )
-
-[sub_resource type="Animation" id=6]
-resource_name = "FoundAnim"
-length = 6.0
-tracks/0/type = "value"
-tracks/0/path = NodePath("../FoundLabel:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5, 4.5, 6 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
-}
-
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id="3"]
 length = 0.001
 tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
 tracks/0/path = NodePath(".:anchor_right")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
 tracks/0/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0 )
+"points": PackedFloat32Array(),
+"times": PackedFloat32Array()
 }
 tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
 tracks/1/path = NodePath(".:anchor_left")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
 tracks/1/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0 )
+"points": PackedFloat32Array(),
+"times": PackedFloat32Array()
 }
 tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
 tracks/2/path = NodePath("../SeekerLabel:modulate:r")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
 tracks/2/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0 )
+"points": PackedFloat32Array(),
+"times": PackedFloat32Array()
 }
 tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
 tracks/3/path = NodePath("../SeekerLabel:modulate:g")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
 tracks/3/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0 )
+"points": PackedFloat32Array(),
+"times": PackedFloat32Array()
 }
 tracks/4/type = "bezier"
+tracks/4/imported = false
+tracks/4/enabled = true
 tracks/4/path = NodePath("../SeekerLabel:modulate:b")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = true
 tracks/4/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0 )
+"points": PackedFloat32Array(),
+"times": PackedFloat32Array()
 }
 tracks/5/type = "bezier"
+tracks/5/imported = false
+tracks/5/enabled = true
 tracks/5/path = NodePath("../SeekerLabel:modulate:a")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
-tracks/5/imported = false
-tracks/5/enabled = true
 tracks/5/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0 )
+"points": PackedFloat32Array(),
+"times": PackedFloat32Array()
 }
 tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
 tracks/6/path = NodePath("../BlackScreen:modulate")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
-tracks/6/imported = false
-tracks/6/enabled = true
 tracks/6/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [ Color( 1, 1, 1, 1 ) ]
+"values": [Color(1, 1, 1, 1)]
 }
 tracks/7/type = "value"
-tracks/7/path = NodePath("../FoundLabel:modulate")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
 tracks/7/imported = false
 tracks/7/enabled = true
+tracks/7/path = NodePath("../VBoxContainer/FoundLabel:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
 tracks/7/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [ Color( 1, 1, 1, 0 ) ]
+"values": [Color(1, 1, 1, 0)]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id="6"]
+resource_name = "FoundAnim"
+length = 6.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../VBoxContainer/FoundLabel:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 4.5, 6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="4"]
 resource_name = "SceneTrans"
 length = 0.5
 tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
 tracks/0/path = NodePath(".:anchor_left")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
 tracks/0/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.5 )
+"points": PackedFloat32Array(),
+"times": PackedFloat32Array()
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id="5"]
 resource_name = "SeekerlabelFade"
 length = 10.0
 tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
 tracks/0/path = NodePath("../SeekerLabel:modulate:r")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
 tracks/0/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 1.9 )
+"points": PackedFloat32Array(),
+"times": PackedFloat32Array()
 }
 tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
 tracks/1/path = NodePath("../SeekerLabel:modulate:g")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
 tracks/1/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 1.9 )
+"points": PackedFloat32Array(),
+"times": PackedFloat32Array()
 }
 tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
 tracks/2/path = NodePath("../SeekerLabel:modulate:b")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
 tracks/2/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 1.9 )
+"points": PackedFloat32Array(),
+"times": PackedFloat32Array()
 }
 tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
 tracks/3/path = NodePath("../SeekerLabel:modulate:a")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
 tracks/3/keys = {
-"points": PoolRealArray( 1, -0.25, 0, 0.25, 0, 1, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0, 0.5, 1.9 )
+"points": PackedFloat32Array(1, -0.25, 0, 0.25, 0, 0, 1, -0.25, 0, 0.25, 0, 0, 0, -0.25, 0, 0.25, 0, 0),
+"times": PackedFloat32Array(0, 9, 10)
 }
 tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
 tracks/4/path = NodePath("../BlackScreen:modulate")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0, 9, 10 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PackedFloat32Array(0, 9, 10),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
-[node name="MainScene" type="Spatial"]
-script = ExtResource( 5 )
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lbba6"]
+_data = {
+"FoundAnim": SubResource( "6" ),
+"RESET": SubResource( "3" ),
+"SceneTrans": SubResource( "4" ),
+"SeekerlabelFade": SubResource( "5" )
+}
 
-[node name="LoadingScreen" parent="." instance=ExtResource( 4 )]
+[node name="MainScene" type="Node3D"]
+script = ExtResource( "5" )
+
+[node name="LoadingScreen" parent="." instance=ExtResource( "4" )]
 visible = false
 
 [node name="Timer" type="Timer" parent="."]
@@ -197,59 +198,54 @@ visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-theme = ExtResource( 2 )
+theme = ExtResource( "2" )
 
-[node name="Label" type="Label" parent="Control"]
-anchor_top = 0.05
+[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
 anchor_right = 1.0
-anchor_bottom = 0.05
-margin_bottom = 55.0
-custom_fonts/font = SubResource( 2 )
-text = "f"
-align = 1
-valign = 1
+offset_bottom = 70.0
 
-[node name="FoundLabel" type="Label" parent="Control"]
-modulate = Color( 1, 1, 1, 0 )
-anchor_right = 1.0
-margin_left = -2.0
-margin_top = 91.0
-margin_right = -2.0
-margin_bottom = 168.0
+[node name="FoundLabel" type="Label" parent="Control/VBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+offset_right = 1024.0
+offset_bottom = 44.0
 text = "You've been found,
  You can now spectate"
-align = 1
-valign = 1
+horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="Control/VBoxContainer"]
+offset_top = 48.0
+offset_right = 1024.0
+offset_bottom = 70.0
+text = "00:00"
+horizontal_alignment = 1
 
 [node name="ColorRect" type="ColorRect" parent="Control"]
 anchor_bottom = 1.0
-color = Color( 0, 0.505882, 0.529412, 1 )
+color = Color(0, 0.505882, 0.529412, 1)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Control/ColorRect"]
-anims/FoundAnim = SubResource( 6 )
-anims/RESET = SubResource( 3 )
-anims/SceneTrans = SubResource( 4 )
-anims/SeekerlabelFade = SubResource( 5 )
+libraries = {
+"": SubResource( "AnimationLibrary_lbba6" )
+}
 
 [node name="Timer" type="Timer" parent="Control/ColorRect"]
 wait_time = 0.5
 one_shot = true
 
 [node name="BlackScreen" type="ColorRect" parent="Control"]
-visible = false
+modulate = Color(1, 1, 1, 0)
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
-color = Color( 0, 0, 0, 1 )
+color = Color(0, 0, 0, 1)
 
 [node name="SeekerLabel" type="Label" parent="Control"]
+modulate = Color(1, 1, 1, 0)
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-margin_top = -18.5
-margin_bottom = 18.5
 text = "You are the seeker"
-align = 1
+horizontal_alignment = 1
 
-[node name="Player" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 24.6548, 0 )
+[node name="Player" parent="." instance=ExtResource( "3" )]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 24.6548, 0)

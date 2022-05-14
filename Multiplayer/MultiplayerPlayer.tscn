@@ -1,57 +1,53 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=8 format=3 uid="uid://m6mmo8154svk"]
 
-[ext_resource path="res://Multiplayer/MultiplayerPlayer.gd" type="Script" id=1]
-[ext_resource path="res://Multiplayer/Models/xbot.tscn" type="PackedScene" id=2]
-[ext_resource path="res://MainMenu/MainMenu.tres" type="Theme" id=3]
-[ext_resource path="res://data/assets/Audio/WalkingSounds/walking_character1.wav" type="AudioStream" id=8]
+[ext_resource type="Script" path="res://Multiplayer/MultiplayerPlayer.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://cekdioem67g4a" path="res://Multiplayer/Models/xbot.tscn" id="2"]
+[ext_resource type="Theme" uid="uid://cnfg2sca3pejl" path="res://MainMenu/MainMenu.tres" id="3"]
+[ext_resource type="AudioStream" uid="uid://d0daioh7kdyax" path="res://data/assets/Audio/WalkingSounds/walking_character1.wav" id="8"]
 
-[sub_resource type="CapsuleShape" id=1]
-radius = 0.946709
+[sub_resource type="CapsuleShape3D" id="1"]
+radius = 1.0
+height = 3.0
 
-[sub_resource type="ViewportTexture" id=2]
+[sub_resource type="ViewportTexture" id="2"]
 viewport_path = NodePath("Spatial/Viewport")
 
-[sub_resource type="AudioStreamRandomPitch" id=3]
-audio_stream = ExtResource( 8 )
+[sub_resource type="AudioStreamRandomPitch" id="3"]
+resource_local_to_scene = false
+resource_name = ""
+audio_stream = ExtResource( "8" )
 random_pitch = 1.0
 
-[node name="MultiplayerPlayer" type="KinematicBody" groups=["Player"]]
-script = ExtResource( 1 )
+[node name="MultiplayerPlayer" type="CharacterBody3D" groups=["Player"]]
+script = ExtResource( "1" )
 
-[node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
-shape = SubResource( 1 )
+[node name="CollisionShape" type="CollisionShape3D" parent="."]
+shape = SubResource( "1" )
 
-[node name="xbot" parent="." instance=ExtResource( 2 )]
-transform = Transform( -1.5, 0, -1.31134e-07, 0, 1.5, 0, 1.31134e-07, 0, -1.5, 0, -1.47241, 0 )
+[node name="xbot" parent="." instance=ExtResource( "2" )]
+transform = Transform3D(-1.5, 0, -1.31134e-07, 0, 1.5, 0, 1.31134e-07, 0, -1.5, 0, -1.47241, 0)
 
-[node name="Spatial" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.56578, 0 )
+[node name="Spatial" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.56578, 0)
 
-[node name="Viewport" type="Viewport" parent="Spatial"]
-size = Vector2( 300, 50 )
+[node name="Viewport" type="SubViewport" parent="Spatial"]
 transparent_bg = true
+size = Vector2i(300, 50)
 
 [node name="Label" type="Label" parent="Spatial/Viewport"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource( 3 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
+theme = ExtResource( "3" )
 text = "Hello, World"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Sprite3D" type="Sprite3D" parent="Spatial"]
-transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0 )
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 flip_v = true
 billboard = 2
-texture = SubResource( 2 )
+texture = SubResource( "2" )
 
-[node name="Audio" type="Spatial" parent="."]
+[node name="Audio" type="Node3D" parent="."]
 
 [node name="Walk" type="AudioStreamPlayer3D" parent="Audio"]
-stream = SubResource( 3 )
-bus = "SoundEffects"
+stream = SubResource( "3" )
+bus = &"SoundEffects"

@@ -1,7 +1,7 @@
-extends Spatial
+extends Node3D
 
-onready var UsernameInput: LineEdit = $Control/VBoxContainer/Username
-onready var IPInput: LineEdit = $Control/VBoxContainer/Ip
+@onready var UsernameInput: LineEdit = $Control/VBoxContainer/Username
+@onready var IPInput: LineEdit = $Control/VBoxContainer/Ip
 
 var IPRegex = RegEx.new()
 var HostnameRegex = RegEx.new()
@@ -18,13 +18,13 @@ func _ready():
 func _on_Button_pressed():
 	#WARNING, REMOVE IPTEXT.empty IN FINAL BUILD
 	
-	var map_button_pressed = int($Control/VBoxContainer/MapSelection/Map1.pressed)
-		
+	var map_button_pressed = int($Control/VBoxContainer/MapSelection/Map1.button_pressed)
+
 	var IPtext = IPInput.text
-	if (IPRegex.search(IPtext) or HostnameRegex.search(IPtext)) and not UsernameInput.text.empty():
-		Multiplayer.username = UsernameInput.text
-		Multiplayer.map_used = map_button_pressed
-		Multiplayer.start_connection("ws://"+IPtext+":8888/ws")
+	if (IPRegex.search(IPtext) or HostnameRegex.search(IPtext)) and not UsernameInput.text.is_empty():
+		multiplayer.username = UsernameInput.text
+		multiplayer.map_used = map_button_pressed
+		multiplayer.start_connection("ws://"+IPtext+":8888/ws")
 		get_tree().change_scene("res://Lobby/Lobby.tscn")
 
 func _on_Options_pressed():

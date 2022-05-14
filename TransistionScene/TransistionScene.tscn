@@ -1,35 +1,42 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=3 uid="uid://dw3b0xwqo2y1a"]
 
-[ext_resource path="res://TransistionScene/SceneTrans.tres" type="Animation" id=1]
-[ext_resource path="res://TransistionScene/TransistionScene.gd" type="Script" id=2]
-[ext_resource path="res://MainMenu/MainMenu.tres" type="Theme" id=3]
+[ext_resource type="Animation" path="res://TransistionScene/SceneTrans.tres" id="1"]
+[ext_resource type="Script" path="res://TransistionScene/TransistionScene.gd" id="2"]
+[ext_resource type="Theme" uid="uid://cnfg2sca3pejl" path="res://MainMenu/MainMenu.tres" id="3"]
 
-[sub_resource type="Animation" id=1]
+[sub_resource type="Animation" id="1"]
 length = 0.001
 tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
 tracks/0/path = NodePath("ColorRect:anchor_right")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
 tracks/0/keys = {
-"points": PoolRealArray( 0, -0.25, 0, 0.25, 0 ),
-"times": PoolRealArray( 0 )
+"points": PackedFloat32Array(),
+"times": PackedFloat32Array()
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dvyu7"]
+_data = {
+"RESET": SubResource( "1" ),
+"SceneTrans": ExtResource( "1" )
 }
 
 [node name="TransistionScene" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource( 3 )
-script = ExtResource( 2 )
+theme = ExtResource( "3" )
+script = ExtResource( "2" )
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchor_bottom = 1.0
-color = Color( 0, 0.505882, 0.529412, 1 )
+color = Color(0, 0.505882, 0.529412, 1)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/RESET = SubResource( 1 )
-anims/SceneTrans = ExtResource( 1 )
+libraries = {
+"": SubResource( "AnimationLibrary_dvyu7" )
+}
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 anchor_right = 1.0
@@ -37,17 +44,16 @@ anchor_bottom = 1.0
 alignment = 1
 
 [node name="Label" type="Label" parent="VBoxContainer"]
-margin_top = 262.0
-margin_right = 1024.0
-margin_bottom = 299.0
+offset_top = 273.0
+offset_right = 1024.0
+offset_bottom = 295.0
 text = "The Hiders won"
-align = 1
-valign = 1
+horizontal_alignment = 1
 
 [node name="Button" type="Button" parent="VBoxContainer"]
-margin_top = 303.0
-margin_right = 1024.0
-margin_bottom = 337.0
+offset_top = 299.0
+offset_right = 1024.0
+offset_bottom = 326.0
 text = "Back to lobby"
 
 [connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_Button_pressed"]

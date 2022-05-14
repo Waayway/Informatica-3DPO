@@ -2,12 +2,13 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/walking_character1.wav-e76d07b958f7ae60fd1cb9b3493c1624.sample"
+uid="uid://d0daioh7kdyax"
+path="res://.godot/imported/walking_character1.wav-e76d07b958f7ae60fd1cb9b3493c1624.sample"
 
 [deps]
 
 source_file="res://data/assets/Audio/WalkingSounds/walking_character1.wav"
-dest_files=[ "res://.import/walking_character1.wav-e76d07b958f7ae60fd1cb9b3493c1624.sample" ]
+dest_files=["res://.godot/imported/walking_character1.wav-e76d07b958f7ae60fd1cb9b3493c1624.sample"]
 
 [params]
 
@@ -17,5 +18,7 @@ force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
 edit/normalize=false
-edit/loop=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
 compress/mode=0

@@ -1,16 +1,16 @@
-extends Spatial
+extends Node3D
 
-onready var podiumPlayer = preload("res://Lobby/Podium.tscn")
+@onready var podiumPlayer = preload("res://Lobby/Podium.tscn")
 var loadedPlayers: Array = []
 var loadedPlayerInstances: Array = []
 
 var PodiumPlayerWidth = 1.8
 
 func _ready():
-	Multiplayer.send_lobby_message()
-	Multiplayer.connect("lobby_new_player", self,"lobby_new_players")
-	Multiplayer.connect("change_to_game", self, "change_to_game")
-	$Timer.connect("timeout",self,"on_timer_timeout")
+	multiplayer.send_lobby_message()
+	multiplayer.connect("lobby_new_player", lobby_new_players)
+	multiplayer.connect("change_to_game", change_to_game)
+	$Timer.connect("timeout", on_timer_timeout)
 
 func _process(delta):
 	$Control/Label.text = str(round($Timer.time_left))
@@ -49,11 +49,11 @@ func lobby_new_players(players: Array, fullDict: Dictionary):
 	
 
 func _on_Button_toggled(button_pressed):
-	Multiplayer.isReady = button_pressed
-	Multiplayer.send_lobby_message()
+	multiplayer.isReady = button_pressed
+	multiplayer.send_lobby_message()
 
 func on_timer_timeout():
-	Multiplayer.send_timer_timeout()
+	multiplayer.send_timer_timeout()
 
 func change_to_game():
 	get_tree().change_scene("res://Game/MainScene.tscn")

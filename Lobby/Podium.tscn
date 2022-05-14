@@ -1,46 +1,42 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=6 format=3 uid="uid://cgejnrptl5scc"]
 
-[ext_resource path="res://Lobby/Podium.obj" type="ArrayMesh" id=1]
-[ext_resource path="res://Lobby/PodiumPlayer.gd" type="Script" id=2]
-[ext_resource path="res://MainMenu/MainMenu.tres" type="Theme" id=3]
-[ext_resource path="res://Multiplayer/Models/xbot.tscn" type="PackedScene" id=4]
+[ext_resource type="ArrayMesh" uid="uid://ck6pglv35nwr" path="res://Lobby/Podium.obj" id="1"]
+[ext_resource type="Script" path="res://Lobby/PodiumPlayer.gd" id="2"]
+[ext_resource type="Theme" uid="uid://cnfg2sca3pejl" path="res://MainMenu/MainMenu.tres" id="3"]
+[ext_resource type="PackedScene" path="res://Multiplayer/Models/xbot.tscn" id="4"]
 
-[sub_resource type="ViewportTexture" id=3]
-viewport_path = NodePath("Spatial/Viewport")
+[sub_resource type="ViewportTexture" id="ViewportTexture_ina73"]
+viewport_path = NodePath("Spatial/SubViewport")
 
-[node name="Podium" type="MeshInstance"]
-transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0 )
-mesh = ExtResource( 1 )
-material/0 = null
+[node name="Podium" type="MeshInstance3D"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+mesh = ExtResource( "1" )
 
-[node name="Player" type="Spatial" parent="."]
-transform = Transform( -2.18557e-08, -0.5, 2.18557e-08, 0, -2.18557e-08, -0.5, 0.5, -2.18557e-08, 9.55343e-16, 0, 1.16965, -0.0155506 )
-script = ExtResource( 2 )
+[node name="Player" type="Node3D" parent="."]
+transform = Transform3D(-2.18557e-08, -0.5, 2.18557e-08, 0, -2.18557e-08, -0.5, 0.5, -2.18557e-08, 9.55343e-16, 0, 1.16965, -0.0155506)
+script = ExtResource( "2" )
 
-[node name="xbot" parent="Player" instance=ExtResource( 4 )]
-transform = Transform( 2, 0, 0, 0, -8.74228e-08, 2, 0, -2, -8.74228e-08, 0, 7.07279e-08, 1.61806 )
+[node name="xbot" parent="Player" instance=ExtResource( "4" )]
+transform = Transform3D(2, 0, 0, 0, -8.74228e-08, 2, 0, -2, -8.74228e-08, 0, 7.07279e-08, 1.61806)
 
-[node name="Spatial" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.35621, 0 )
-
-[node name="Viewport" type="Viewport" parent="Spatial"]
-size = Vector2( 300, 50 )
-transparent_bg = true
-
-[node name="Label" type="Label" parent="Spatial/Viewport"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-theme = ExtResource( 3 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Hello, World"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="Spatial" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.35621, 0)
 
 [node name="Sprite3D" type="Sprite3D" parent="Spatial"]
-transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0 )
-flip_v = true
-billboard = 2
-texture = SubResource( 3 )
+billboard = 1
+texture = SubResource( "ViewportTexture_ina73" )
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Spatial"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SubViewport" type="SubViewport" parent="Spatial/SubViewportContainer"]
+transparent_bg = true
+size = Vector2i(300, 20)
+size_2d_override = Vector2i(300, 20)
+
+[node name="Label" type="Label" parent="Spatial/SubViewportContainer/SubViewport"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( "3" )
+text = "Hello, World"
