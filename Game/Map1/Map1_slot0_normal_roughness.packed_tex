@@ -1,8 +1,0 @@
-{
-	"contains_albedo": false,
-	"resolution": 512,
-	"src": {
-		"a": "res://data/assets/Materials/Grass/Grass004_4K_Roughness.jpg",
-		"rgb": "res://data/assets/Materials/Grass/Grass004_4K_NormalGL.jpg"
-	}
-}
